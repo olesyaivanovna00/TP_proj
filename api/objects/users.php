@@ -64,6 +64,48 @@ class Users
         return false;
     }
 
-    // здесь будет метод emailExists() 
+    function emailExists()
+    {
+
+        // запрос, чтобы проверить, существует ли электронная почта
+        $query = "SELECT id_users, name, mail, phone, password, payment_card
+            FROM " . $this->table_name . "
+            WHERE mail = :mail
+            LIMIT 0,1";
+
+        // подготовка запроса
+        $stmt = $this->conn->prepare($query);
+
+        // инъекция
+        $this->mail = htmlspecialchars(strip_tags($this->mail));
+
+        // привязываем значение mail
+        $stmt->bindParam(':mail', $this->mail);
+
+        // выполняем запрос
+        $stmt->execute();
+
+        // получаем количество строк
+        $num = $stmt->rowCount();
+
+        // если электронная почта существует,
+        // присвоим значения свойствам объекта для легкого доступа и использования для php сессий
+        if ($num > 0) {
+
+            // получаем значения
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // присвоим значения свойствам объекта
+            $this->id_users = $row['id_users'];
+            $this->name = $row['name'];
+            $this->mail = $row['mail'];
+            $this->password = $row['password'];
+
+            // вернём 'true', потому что в базе данных существует электронная почта
+            return true;
+        }
+
+        // вернём 'false', если адрес электронной почты не существует в базе данных
+        return false;
+    }
 }
-?>
