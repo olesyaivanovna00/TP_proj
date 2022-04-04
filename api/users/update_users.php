@@ -66,6 +66,7 @@ if ($jwt) {
                 )
             );
 
+            $jwt = JWT::encode($token, $key, 'HS256');
             // код ответа
             http_response_code(200);
 
