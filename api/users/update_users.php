@@ -43,49 +43,68 @@ if ($jwt) {
         // декодирование jwt
         $decoded = JWT::decode($jwt, new Key($key, 'HS256'));
 
-        // Нам нужно установить отправленные данные (через форму HTML) в свойствах объекта пользователя
+        // проверяем значения iat для пользователя 
         $users->id_users = $decoded->data->id_users;
-        $users->name = $data->name;
-        $users->mail = $data->mail;
-        $users->phone = $data->phone;
-        $users->password = $data->password;
-        $users->payment_card = $data->payment_card;
+        $users->iat = $decoded->iat;
+        if ($users->checkIAT()) {
 
-        // создание пользователя
-        if ($users->update()) {
-            // нам нужно заново сгенерировать JWT, потому что данные пользователя могут отличаться
-            $token = array(
-                "iss" => $iss,
-                "sub" => $sub,
-                "aud" => $aud,
-                "iat" => $iat,
-                "data" => array(
-                    "id_users" => $users->id_users,
-                    "name" => $users->name,
-                    "mail" => $users->mail,
-                )
-            );
+            // Нам нужно установить отправленные данные (через форму HTML) в свойствах объекта пользователя
+            $users->id_users = $decoded->data->id_users;
+            $users->name = $data->name;
+            $users->mail = $data->mail;
+            $users->phone = $data->phone;
+            $users->password = $data->password;
+            $users->payment_card = $data->payment_card;
 
-            $jwt = JWT::encode($token, $key, 'HS256');
-            // код ответа
-            http_response_code(200);
+            // устанавливаем значения iat для пользователя 
+            $users->iat = $iat;
 
-            // ответ в формате JSON
-            echo json_encode(
-                array(
-                    "message" => "Пользователь был обновлён",
-                    "jwt" => $jwt
-                )
-            );
-        }
+            // создание пользователя
+            if ($users->update() && $users->updateIAT()) {
+                // нам нужно заново сгенерировать JWT, потому что данные пользователя могут отличаться
+                $token = array(
+                    "iss" => $iss,
+                    "sub" => $subU,
+                    "aud" => $aud,
+                    "iat" => $iat,
+                    "data" => array(
+                        "id_users" => $users->id_users,
+                        "name" => $users->name,
+                        "mail" => $users->mail,
+                    )
+                );
 
-        // сообщение, если не удается обновить пользователя
+                $jwt = JWT::encode($token, $key, 'HS256');
+
+                // код ответа
+                http_response_code(200);
+
+                // ответ в формате JSON
+                echo json_encode(
+                    array(
+                        "message" => "Пользователь был обновлён",
+                        "jwt" => $jwt
+                    )
+                );
+            }
+
+            // сообщение, если не удается обновить пользователя
+            else {
+                // код ответа
+                http_response_code(401);
+
+                // показать сообщение об ошибке
+                echo json_encode(array("message" => "Невозможно обновить пользователя."));
+            }
+        } 
+        
+        // сообщение, если iat для пользователя устарел
         else {
             // код ответа
             http_response_code(401);
 
             // показать сообщение об ошибке
-            echo json_encode(array("message" => "Невозможно обновить пользователя."));
+            echo json_encode(array("message" => "Токен устарел, невозможно обновить пользователя."));
         }
     }
 

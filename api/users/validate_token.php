@@ -16,6 +16,18 @@ include_once '../libs/php-jwt-master/src/Key.php';
 
 use \Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+
+// файлы, необходимые для подключения к базе данных
+include_once '../config/database.php';
+include_once '../objects/users.php';
+
+// получаем соединение с базой данных
+$database = new Database();
+$db = $database->getConnection();
+
+// создание объекта 'User'
+$users = new Users($db);
+
 // получаем значение веб-токена JSON
 $data = json_decode(file_get_contents("php://input"));
 
@@ -30,15 +42,30 @@ if ($jwt) {
         // декодирование jwt
         $decoded = JWT::decode($jwt, new Key($key, 'HS256'));
 
-        // код ответа
-        http_response_code(200);
+        // устанавливаем значения iat для пользователя 
+        $users->id_users = $decoded->data->id_users;
+        $users->iat = $decoded->iat;
+        if ($users->checkIAT()) {
 
-        // показать детали
-        echo json_encode(array(
-            "message" => "Доступ разрешен.",
-            "data" => $decoded->data
+            // код ответа
+            http_response_code(200);
 
-        ));
+            // показать детали
+            echo json_encode(array(
+                "message" => "Доступ разрешен.",
+                "data" => $decoded->data
+
+            ));
+        }
+        // показать сообщение об устаревшем токене
+        else {
+
+            // код ответа
+            http_response_code(401);
+
+            // сообщить пользователю что доступ запрещен
+            echo json_encode(array("message" => "Токен устарел, доступ запрещён."));
+        }
     }
 
     // если декодирование не удалось, это означает, что JWT является недействительным

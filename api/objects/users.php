@@ -13,6 +13,7 @@ class Users
     public $phone;
     public $password;
     public $payment_card;
+    public $iat;
 
 
     // конструктор для соединения с базой данных
@@ -69,7 +70,7 @@ class Users
     {
 
         // запрос, чтобы проверить, существует ли электронная почта
-        $query = "SELECT id_users, name, mail, phone, password, payment_card
+        $query = "SELECT id_users, name, mail, phone, password, payment_card, iat
             FROM " . $this->table_name . "
             WHERE mail = :mail
             LIMIT 0,1";
@@ -101,6 +102,7 @@ class Users
             $this->name = $row['name'];
             $this->mail = $row['mail'];
             $this->password = $row['password'];
+            $this->iat = $row['iat'];
 
             // вернём 'true', потому что в базе данных существует электронная почта
             return true;
@@ -141,7 +143,7 @@ class Users
         $stmt->bindParam(':mail', $this->mail);
         $stmt->bindParam(':phone', $this->phone);
         $stmt->bindParam(':payment_card', $this->payment_card);
-      
+
         // метод password_hash () для защиты пароля пользователя в базе данных
         if (!empty($this->password)) {
             $this->password = htmlspecialchars(strip_tags($this->password));
@@ -157,6 +159,78 @@ class Users
             return true;
         }
 
+        return false;
+    }
+
+    // обновить IAT пользователя
+    public function updateIAT()
+    {
+
+        $query = "UPDATE " . $this->table_name . "
+            SET
+                iat = :iat                
+            WHERE id_users = :id_users";
+
+        // подготовка запроса
+        $stmt = $this->conn->prepare($query);
+
+        // инъекция (очистка)
+        $this->iat = htmlspecialchars(strip_tags($this->iat));
+
+        // привязываем значения с HTML формы
+        $stmt->bindParam(':iat', $this->iat);
+
+        // уникальный идентификатор записи для редактирования
+        $stmt->bindParam(':id_users', $this->id_users);
+
+        // Если выполнение успешно, то информация о IAT пользователя будет сохранена в базе данных
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    // проверить IAT пользователя
+    public function checkIAT()
+    {
+
+        // запрос, чтобы проверить, верно ли IAT пользователя
+        $query = "SELECT id_users, iat
+            FROM " . $this->table_name . "
+            WHERE id_users = :id_users
+            LIMIT 0,1";
+
+        // подготовка запроса
+        $stmt = $this->conn->prepare($query);
+
+        // инъекция
+        $this->id_users = htmlspecialchars(strip_tags($this->id_users));
+
+        // привязываем значение id_users
+        $stmt->bindParam(':id_users', $this->id_users);
+
+        // выполняем запрос
+        $stmt->execute();
+
+        // получаем количество строк
+        $num = $stmt->rowCount();
+
+        // если IAT пользователя существует,
+        // то проверим является ли действительным токен
+        if ($num > 0) {
+
+            // получаем значения
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($this->iat == $row['iat']) {
+
+                // вернём 'true', потому что в базе данных IAT пользователя соответствует токену
+                return true;
+            }
+        }
+
+        // вернём 'false', если IAT пользователя не соответствует токену 
         return false;
     }
 }

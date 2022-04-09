@@ -38,7 +38,7 @@ if ($email_exists && password_verify($data->password, $users->password)) {
 
     $token = array(
         "iss" => $iss,
-        "sub" => $sub,
+        "sub" => $subU,
         "aud" => $aud,
         "iat" => $iat,
         "data" => array(
@@ -48,11 +48,17 @@ if ($email_exists && password_verify($data->password, $users->password)) {
         )
     );
 
+    // устанавливаем значения iat для пользователя 
+    $users->iat = $iat;
+    $updateIAT = $users->updateIAT();
+
     // код ответа
     http_response_code(200);
 
     // создание jwt
     $jwt = JWT::encode($token, $key, 'HS256');
+
+
     echo json_encode(
         array(
             "message" => "Успешный вход в систему.",
