@@ -171,7 +171,8 @@
                 showHomePage();
                 clearResponse();
             });
-
+            
+            //показывает страницу обновления данных
             $(document).on('click', '#update_account', function () {
                 showUpdateAccountForm();
             });
@@ -340,6 +341,7 @@
                 $("#logout").show();
             }
 
+            // функция показывает HTML-форму для обновления данных о пользователе.
             function showUpdateAccountForm() {
                 // валидация JWT для проверки доступа
                 var jwt = getCookie('jwt');
