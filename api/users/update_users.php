@@ -49,6 +49,7 @@ if ($jwt) {
 
         // устанавливаем значения sub для пользователя 
         $users->sub = $decoded->sub;
+        $users->subCheck = $subU;
 
         //проверяем значения
         if ($users->checkIAT() && $users->checkSUB()) {

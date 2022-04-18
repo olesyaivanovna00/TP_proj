@@ -237,12 +237,9 @@ class Users
     // проверить SUB пользователя
     public function checkSUB()
     {
-        // требуется для проверки JWT
-        include_once '../config/core.php';
-
         // если SUB пользователя существует,
         // то проверим является ли он правильным
-        if ($this->sub == $subU) {
+        if ($this->sub == $this->subCheck) {
 
             // вернём 'true', потому что SUB пользователя соответствует токену
             return true;
