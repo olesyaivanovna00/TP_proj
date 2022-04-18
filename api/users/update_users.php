@@ -43,10 +43,15 @@ if ($jwt) {
         // декодирование jwt
         $decoded = JWT::decode($jwt, new Key($key, 'HS256'));
 
-        // проверяем значения iat для пользователя 
+        // устанавливаем значения iat для пользователя 
         $users->id_users = $decoded->data->id_users;
         $users->iat = $decoded->iat;
-        if ($users->checkIAT()) {
+
+        // устанавливаем значения sub для пользователя 
+        $users->sub = $decoded->sub;
+
+        //проверяем значения
+        if ($users->checkIAT() && $users->checkSUB()) {
 
             // Нам нужно установить отправленные данные (через форму HTML) в свойствах объекта пользователя
             $users->id_users = $decoded->data->id_users;
@@ -96,8 +101,8 @@ if ($jwt) {
                 // показать сообщение об ошибке
                 echo json_encode(array("message" => "Невозможно обновить пользователя."));
             }
-        } 
-        
+        }
+
         // сообщение, если iat для пользователя устарел
         else {
             // код ответа

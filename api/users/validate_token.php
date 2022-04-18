@@ -45,7 +45,12 @@ if ($jwt) {
         // устанавливаем значения iat для пользователя 
         $users->id_users = $decoded->data->id_users;
         $users->iat = $decoded->iat;
-        if ($users->checkIAT()) {
+
+        // устанавливаем значения sub для пользователя 
+        $users->sub = $decoded->sub;
+
+        //проверяем значения
+        if ($users->checkIAT() && $users->checkSUB()) {
 
             // код ответа
             http_response_code(200);
