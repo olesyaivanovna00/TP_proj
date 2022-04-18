@@ -248,4 +248,50 @@ class Users
         // вернём 'false', если SUB пользователя не соответствует токену 
         return false;
     }
+
+    // получение информации о пользователе для обновления данных о нем
+    function information_users()
+    {
+
+        // запрос, чтобы получить данные пользователя
+        $query = "SELECT id_users, name, mail, phone, payment_card
+           FROM " . $this->table_name . "
+           WHERE id_users = :id_users
+           LIMIT 0,1";
+
+        // подготовка запроса
+        $stmt = $this->conn->prepare($query);
+
+        // инъекция
+        $this->id_users = htmlspecialchars(strip_tags($this->id_users));
+
+        // привязываем значение mail
+        $stmt->bindParam(':id_users', $this->id_users);
+
+        // выполняем запрос
+        $stmt->execute();
+
+        // получаем количество строк
+        $num = $stmt->rowCount();
+
+        // если пользователь есть 
+        if ($num > 0) {
+
+            // получаем значения
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // присвоим значения свойствам объекта
+            $this->id_users = $row['id_users'];
+            $this->name = $row['name'];
+            $this->mail = $row['mail'];
+            $this->phone = $row['phone'];
+            $this->payment_card = $row['payment_card'];
+
+            // вернём 'true', потому что информация о пользователе есть
+            return true;
+        }
+
+        // вернём 'false', если информации о пользователе нет
+        return false;
+    }
 }
