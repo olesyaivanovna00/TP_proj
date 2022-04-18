@@ -1,12 +1,12 @@
 <?php
-// required headers
+// заголовки
 header("Access-Control-Allow-Origin: http://SOK/");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-// требуется для кодирования веб-токена JSON
+// требуется для декодирования JWT
 include_once '../config/core.php';
 include_once '../libs/php-jwt-master/src/BeforeValidException.php';
 include_once '../libs/php-jwt-master/src/ExpiredException.php';
@@ -28,10 +28,10 @@ $db = $database->getConnection();
 // создание объекта 'User'
 $users = new Users($db);
 
-// получаем данные
+// получаем значение веб-токена JSON
 $data = json_decode(file_get_contents("php://input"));
 
-// получаем jwt
+// получаем JWT
 $jwt = isset($data->jwt) ? $data->jwt : "";
 
 // если JWT не пуст
@@ -39,7 +39,6 @@ if ($jwt) {
 
     // если декодирование выполнено успешно, показать данные пользователя
     try {
-
         // декодирование jwt
         $decoded = JWT::decode($jwt, new Key($key, 'HS256'));
 
@@ -54,63 +53,35 @@ if ($jwt) {
         //проверяем значения
         if ($users->checkIAT() && $users->checkSUB()) {
 
-            // Нам нужно установить отправленные данные (через форму HTML) в свойствах объекта пользователя
-            $users->id_users = $decoded->data->id_users;
-            $users->name = $data->name;
-            $users->mail = $data->mail;
-            $users->phone = $data->phone;
-            $users->password = $data->password;
-            $users->payment_card = $data->payment_card;
+            //есть ли в базе информация о пользователе 
+            $information_data = $users->information_users();
 
-            // устанавливаем значения iat для пользователя 
-            $users->iat = $iat;
-
-            // создание пользователя
-            if ($users->update() && $users->updateIAT()) {
-                // нам нужно заново сгенерировать JWT, потому что данные пользователя могут отличаться
-                $token = array(
-                    "iss" => $iss,
-                    "sub" => $subU,
-                    "aud" => $aud,
-                    "iat" => $iat,
-                    "data" => array(
-                        "id_users" => $users->id_users,
-                        "name" => $users->name,
-                        "mail" => $users->mail,
-                    )
-                );
-
-                $jwt = JWT::encode($token, $key, 'HS256');
+            if ($information_data) {
 
                 // код ответа
                 http_response_code(200);
 
-                // ответ в формате JSON
-                echo json_encode(
-                    array(
-                        "message" => "Пользователь был обновлён",
-                        "jwt" => $jwt
+                // показать детали
+                echo json_encode(array(
+                    "message" => "Доступ разрешен.",
+                    "data" => array(
+                        "id_users" => $users->id_users,
+                        "name" => $users->name,
+                        "mail" => $users->mail,
+                        "phone" => $users->phone,
+                        "payment_card" => $users->payment_card,
                     )
-                );
-            }
-
-            // сообщение, если не удается обновить пользователя
-            else {
-                // код ответа
-                http_response_code(401);
-
-                // показать сообщение об ошибке
-                echo json_encode(array("message" => "Невозможно обновить пользователя."));
+                ));
             }
         }
-
-        // сообщение, если iat для пользователя устарел
+        // показать сообщение об устаревшем токене
         else {
+
             // код ответа
             http_response_code(401);
 
-            // показать сообщение об ошибке
-            echo json_encode(array("message" => "Токен устарел, невозможно обновить пользователя."));
+            // сообщить пользователю что доступ запрещен
+            echo json_encode(array("message" => "Токен устарел, доступ запрещён."));
         }
     }
 
@@ -120,10 +91,11 @@ if ($jwt) {
         // код ответа
         http_response_code(401);
 
-        // сообщение об ошибке
+        // сообщить пользователю отказано в доступе и показать сообщение об ошибке
         echo json_encode(array(
-            "message" => "Доступ закрыт",
+            "message" => "Доступ закрыт.",
             "error" => $e->getMessage()
+
         ));
     }
 }
@@ -135,5 +107,5 @@ else {
     http_response_code(401);
 
     // сообщить пользователю что доступ запрещен
-    echo json_encode(array("message" => "Доступ закрыт."));
+    echo json_encode(array("message" => "Доступ запрещён."));
 }

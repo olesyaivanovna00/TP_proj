@@ -12,6 +12,8 @@ date_default_timezone_set('Europe/Moscow');
 // переменные, используемые для JWT
 $key = "secret_key";
 $iss = "SOK";
-$sub = "auth";
+$subU = "authU";
+$subA = "authA";
+$subO = "authO";
 $aud = "http://SOK/";
-$iat = 1649084991;
+$iat = time();
