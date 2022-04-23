@@ -73,20 +73,25 @@
                 <h2>Регистрация</h2>
                 <form id='sign_up_form'>
                     <div class="form-group">
-                        <label for="firstname">Имя</label>
-                        <input type="text" class="form-control" name="firstname" id="firstname" required />
+                        <label for="name">Имя</label>
+                        <input type="text" class="form-control" name="name" id="name" required />
                     </div>
-    
+                     
                     <div class="form-group">
-                        <label for="lastname">Фамилия</label>
-                        <input type="text" class="form-control" name="lastname" id="lastname" required />
+                        <label for="mail">Email</label>
+                        <input type="email" class="form-control" name="mail" id="mail" required />
                     </div>
-    
+
                     <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" class="form-control" name="email" id="email" required />
+                        <label for="phone">Телефон</label>
+                        <input type="text" class="form-control" name="phone" id="phone" required />
                     </div>
-    
+
+                    <div class="form-group">
+                        <label for="payment_card">Карта</label>
+                        <input type="text" class="form-control" name="payment_card" id="payment_card" required />
+                    </div>
+
                     <div class="form-group">
                         <label for="password">Пароль</label>
                         <input type="password" class="form-control" name="password" id="password" required />
@@ -182,7 +187,7 @@
                 showHomePage();
                 clearResponse();
             });
-
+            
             // срабатывание при отправке формы «обновить аккаунт»
             $(document).on('submit', '#update_account_form', function () {
 
