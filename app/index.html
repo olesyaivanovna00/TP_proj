@@ -63,9 +63,10 @@
         crossorigin="anonymous"></script>
 
     <script>
+
         // jQuery код
         jQuery(function ($) {
-
+            let addressSOK = 'sok';
             // показать форму регистрации
             $(document).on('click', '#sign_up', function () {
 
@@ -114,7 +115,7 @@
 
                 // отправить данные формы в API
                 $.ajax({
-                    url: "http://sok/api/users/create_users.php",
+                    url: "http://" + addressSOK + "/api/users/create_users.php",
                     type: "POST",
                     contentType: 'application/json',
                     data: form_data,
@@ -147,7 +148,7 @@
 
                 // отправить данные формы в API
                 $.ajax({
-                    url: "http://sok/api/users/login.php",
+                    url: "http://" + addressSOK + "/api/users/login.php",
                     type: "POST",
                     contentType: 'application/json',
                     data: form_data,
@@ -176,7 +177,7 @@
                 showHomePage();
                 clearResponse();
             });
-            
+
             //показывает страницу обновления данных
             $(document).on('click', '#update_account', function () {
                 showUpdateAccountForm();
@@ -187,7 +188,7 @@
                 showHomePage();
                 clearResponse();
             });
-            
+
             // срабатывание при отправке формы «обновить аккаунт»
             $(document).on('submit', '#update_account_form', function () {
 
@@ -208,7 +209,7 @@
 
                 // отправить данные формы в API
                 $.ajax({
-                    url: "http://sok/api/users/update_users.php",
+                    url: "http://" + addressSOK + "/api/users/update_users.php",
                     type: "POST",
                     contentType: 'application/json',
                     data: form_data,
@@ -297,7 +298,7 @@
 
                 // валидация JWT для проверки доступа
                 var jwt = getCookie('jwt');
-                $.post("http://sok/api/users/validate_token.php", JSON.stringify({ jwt: jwt })).done(function (result) {
+                $.post("http://" + addressSOK + "/api/users/validate_token.php", JSON.stringify({ jwt: jwt })).done(function (result) {
 
                     // если прошел валидацию, показать домашнюю страницу
                     var html = `
@@ -350,7 +351,7 @@
             function showUpdateAccountForm() {
                 // валидация JWT для проверки доступа
                 var jwt = getCookie('jwt');
-                $.post("http://sok/api/users/information_update_users.php", JSON.stringify({ jwt: jwt })).done(function (result) {
+                $.post("http://" + addressSOK + "/api/users/information_update_users.php", JSON.stringify({ jwt: jwt })).done(function (result) {
 
                     // если валидация прошла успешно, покажем данные пользователя в форме
                     var html = `
