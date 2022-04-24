@@ -76,7 +76,7 @@ if ($jwt) {
                     "data" => array(
                         "id_users" => $users->id_users,
                         "name" => $users->name,
-                        "mail" => $users->mail,
+                        "mail" => $users->mail
                     )
                 );
 

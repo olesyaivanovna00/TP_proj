@@ -267,4 +267,52 @@ class Organizer
         // вернём 'false', если SUB организатора не соответствует токену 
         return false;
     }
+
+    // получение информации о организаторе для обновления данных о нем
+    function information_organizer()
+    {
+
+        // запрос, чтобы получить данные организатора
+        $query = "SELECT id_organizer, title, login, mail, phone, payment_card, id_city
+           FROM " . $this->table_name . "
+           WHERE id_organizer = :id_organizer
+           LIMIT 0,1";
+
+        // подготовка запроса
+        $stmt = $this->conn->prepare($query);
+
+        // инъекция
+        $this->id_organizer = htmlspecialchars(strip_tags($this->id_organizer));
+
+        // привязываем значение id_organizer
+        $stmt->bindParam(':id_organizer', $this->id_organizer);
+
+        // выполняем запрос
+        $stmt->execute();
+
+        // получаем количество строк
+        $num = $stmt->rowCount();
+
+        // если организатор есть 
+        if ($num > 0) {
+
+            // получаем значения
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // присвоим значения свойствам объекта
+            $this->id_organizer = $row['id_organizer'];
+            $this->title = $row['title'];
+            $this->login = $row['login'];
+            $this->mail = $row['mail'];
+            $this->phone = $row['phone'];
+            $this->payment_card = $row['payment_card'];
+            $this->id_city = $row['id_city'];
+
+            // вернём 'true', потому что информация о организаторе есть
+            return true;
+        }
+
+        // вернём 'false', если информации о организаторе нет
+        return false;
+    }
 }

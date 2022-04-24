@@ -265,7 +265,7 @@ class Users
         // инъекция
         $this->id_users = htmlspecialchars(strip_tags($this->id_users));
 
-        // привязываем значение mail
+        // привязываем значение id_users
         $stmt->bindParam(':id_users', $this->id_users);
 
         // выполняем запрос

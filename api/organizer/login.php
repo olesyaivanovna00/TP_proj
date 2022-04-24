@@ -8,21 +8,21 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 // файлы необходимые для соединения с БД
 include_once '../config/database.php';
-include_once '../objects/users.php';
+include_once '../objects/organizer.php';
 
 // получаем соединение с базой данных
 $database = new Database();
 $db = $database->getConnection();
 
-// создание объекта 'User'
-$users = new Users($db);
+// создание объекта 'Organizer'
+$organizer = new Organizer($db);
 
 // получаем данные
 $data = json_decode(file_get_contents("php://input"));
 
 // устанавливаем значения
-$users->mail = $data->mail;
-$email_exists = $users->emailExists();
+$organizer->mail = $data->mail;
+$email_exists = $organizer->emailExists();
 
 // подключение файлов jwt
 include_once '../config/core.php';
@@ -34,23 +34,23 @@ include_once '../libs/php-jwt-master/src/JWT.php';
 use \Firebase\JWT\JWT;
 
 // существует ли электронная почта и соответствует ли пароль тому, что находится в базе данных
-if ($email_exists && password_verify($data->password, $users->password)) {
+if ($email_exists && password_verify($data->password, $organizer->password)) {
 
     $token = array(
         "iss" => $iss,
-        "sub" => $subU,
+        "sub" => $subO,
         "aud" => $aud,
         "iat" => $iat,
         "data" => array(
-            "id_users" => $users->id_users,
-            "name" => $users->name,
-            "mail" => $users->mail
+            "id_organizer" => $organizer->id_organizer,
+            "login" => $organizer->login,
+            "mail" => $organizer->mail
         )
     );
 
-    // устанавливаем значения iat для пользователя 
-    $users->iat = $iat;
-    $updateIAT = $users->updateIAT();
+    // устанавливаем значения iat для организатора 
+    $organizer->iat = $iat;
+    $updateIAT = $organizer->updateIAT();
 
     // код ответа
     http_response_code(200);
@@ -68,12 +68,12 @@ if ($email_exists && password_verify($data->password, $users->password)) {
 }
 
 // Если электронная почта не существует или пароль не совпадает,
-// сообщим пользователю, что он не может войти в систему
+// сообщим организатору, что он не может войти в систему
 else {
 
     // код ответа
     http_response_code(401);
 
-    // сказать пользователю что войти не удалось
+    // сказать организатору что войти не удалось
     echo json_encode(array("message" => "Ошибка входа."));
 }
