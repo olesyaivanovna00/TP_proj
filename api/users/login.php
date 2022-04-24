@@ -52,19 +52,30 @@ if ($email_exists && password_verify($data->password, $users->password)) {
     $users->iat = $iat;
     $updateIAT = $users->updateIAT();
 
-    // код ответа
-    http_response_code(200);
+    if ($updateIAT) {
+        // код ответа
+        http_response_code(200);
 
-    // создание jwt
-    $jwt = JWT::encode($token, $key, 'HS256');
+        // создание jwt
+        $jwt = JWT::encode($token, $key, 'HS256');
 
 
-    echo json_encode(
-        array(
-            "message" => "Успешный вход в систему.",
-            "jwt" => $jwt
-        )
-    );
+        echo json_encode(
+            array(
+                "message" => "Успешный вход в систему.",
+                "jwt" => $jwt
+            )
+        );
+    }
+
+    // сообщение, если не удается обновить пользователя
+    else {
+        // код ответа
+        http_response_code(401);
+
+        // показать сообщение об ошибке
+        echo json_encode(array("message" => "Невозможно обновить вход пользователя."));
+    }
 }
 
 // Если электронная почта не существует или пароль не совпадает,
