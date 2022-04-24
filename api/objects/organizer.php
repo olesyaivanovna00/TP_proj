@@ -2,7 +2,7 @@
 class Organizer
 {
 
-    // подключение к базе данных и таблице 'users'
+    // подключение к базе данных и таблице 'organizer'
     private $conn;
     private $table_name = "organizer";
 
@@ -153,7 +153,7 @@ class Organizer
         $this->phone = htmlspecialchars(strip_tags($this->phone));
         $this->payment_card = htmlspecialchars(strip_tags($this->payment_card));
         $this->id_city = htmlspecialchars(strip_tags($this->id_city));
-        
+
 
         // привязываем значения с HTML формы
         $stmt->bindParam(':title', $this->title);
@@ -178,6 +178,93 @@ class Organizer
             return true;
         }
 
+        return false;
+    }
+
+    // обновить IAT организатора
+    public function updateIAT()
+    {
+
+        $query = "UPDATE " . $this->table_name . "
+            SET
+                iat = :iat                
+            WHERE id_organizer = :id_organizer";
+
+        // подготовка запроса
+        $stmt = $this->conn->prepare($query);
+
+        // инъекция (очистка)
+        $this->iat = htmlspecialchars(strip_tags($this->iat));
+
+        // привязываем значения с HTML формы
+        $stmt->bindParam(':iat', $this->iat);
+
+        // уникальный идентификатор записи для редактирования
+        $stmt->bindParam(':id_organizer', $this->id_organizer);
+
+        // Если выполнение успешно, то информация о IAT организатора будет сохранена в базе данных
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    // проверить IAT организатора
+    public function checkIAT()
+    {
+
+        // запрос, чтобы проверить, верно ли IAT организатора
+        $query = "SELECT id_organizer, iat
+               FROM " . $this->table_name . "
+               WHERE id_organizer = :id_organizer
+               LIMIT 0,1";
+
+        // подготовка запроса
+        $stmt = $this->conn->prepare($query);
+
+        // инъекция
+        $this->id_organizer = htmlspecialchars(strip_tags($this->id_organizer));
+
+        // привязываем значение id_organizer
+        $stmt->bindParam(':id_organizer', $this->id_organizer);
+
+        // выполняем запрос
+        $stmt->execute();
+
+        // получаем количество строк
+        $num = $stmt->rowCount();
+
+        // если IAT организатора существует,
+        // то проверим является ли действительным токен
+        if ($num > 0) {
+
+            // получаем значения
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($this->iat == $row['iat']) {
+
+                // вернём 'true', потому что в базе данных IAT организатора соответствует токену
+                return true;
+            }
+        }
+
+        // вернём 'false', если IAT организатора не соответствует токену 
+        return false;
+    }
+
+    // проверить SUB организатора
+    public function checkSUB()
+    {
+        // если SUB организатора существует,
+        // то проверим является ли он правильным
+        if ($this->sub == $this->subCheck) {
+
+            // вернём 'true', потому что SUB организатора соответствует токену
+            return true;
+        }
+
+        // вернём 'false', если SUB организатора не соответствует токену 
         return false;
     }
 }
