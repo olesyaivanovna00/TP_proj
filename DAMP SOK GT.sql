@@ -1,11 +1,3 @@
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
-
 CREATE TABLE `administrator_sites` (
   `id_administrator_sites` int NOT NULL,
   `login` varchar(120) NOT NULL,
@@ -14,7 +6,7 @@ CREATE TABLE `administrator_sites` (
   `phone` varchar(15) DEFAULT NULL,
   `id_city` int NOT NULL,
   `iat` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 CREATE TABLE `area` (
   `id_area` int NOT NULL,
@@ -23,7 +15,7 @@ CREATE TABLE `area` (
   `id_city` int NOT NULL,
   `address` varchar(250) NOT NULL,
   `img_map` varchar(120) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 CREATE TABLE `auction_product` (
   `id_auction_product` int NOT NULL,
@@ -35,7 +27,7 @@ CREATE TABLE `auction_product` (
   `bet_time` int NOT NULL,
   `img_product` int NOT NULL,
   `description_product` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 CREATE TABLE `auction_start` (
   `id_auction_start` int NOT NULL,
@@ -43,23 +35,23 @@ CREATE TABLE `auction_start` (
   `tickets_left` int DEFAULT NULL,
   `days_left` int DEFAULT NULL,
   `increment_step` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 CREATE TABLE `auction_ticket` (
   `id_auction_ticket` int NOT NULL,
   `id_auction_start` int NOT NULL,
   `id_users` int DEFAULT NULL,
   `id_ticket` int NOT NULL,
-  `status` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `status` varchar(50) NOT NULL,
   `price` int NOT NULL,
   `time_start` int NOT NULL,
   `bet_time` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 CREATE TABLE `city` (
   `id_city` int NOT NULL,
   `title` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 CREATE TABLE `concert` (
   `id_concert` int NOT NULL,
@@ -73,22 +65,22 @@ CREATE TABLE `concert` (
   `broadcast` varchar(150) DEFAULT NULL,
   `img_promo` varchar(120) DEFAULT NULL,
   `description_promo` varchar(1000) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 CREATE TABLE `concert_participants` (
   `id_concert` int NOT NULL,
   `id_executor` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 CREATE TABLE `executor` (
   `id_executor` int NOT NULL,
   `title` varchar(150) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 CREATE TABLE `genre` (
   `id_genre` int NOT NULL,
-  `title` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `title` varchar(150) NOT NULL
+);
 
 CREATE TABLE `organizer` (
   `id_organizer` int NOT NULL,
@@ -100,7 +92,7 @@ CREATE TABLE `organizer` (
   `payment_card` varchar(50) DEFAULT NULL,
   `id_city` int NOT NULL,
   `iat` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 CREATE TABLE `place_hall` (
   `id_place_hall` int NOT NULL,
@@ -110,7 +102,7 @@ CREATE TABLE `place_hall` (
   `place` int NOT NULL,
   `x_map` int DEFAULT NULL,
   `y_map` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 CREATE TABLE `ticket` (
   `id_ticket` int NOT NULL,
@@ -120,7 +112,7 @@ CREATE TABLE `ticket` (
   `id_users` int DEFAULT NULL,
   `mail` varchar(50) DEFAULT NULL,
   `price` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 CREATE TABLE `types_places` (
   `id_types_places` int NOT NULL,
@@ -128,17 +120,17 @@ CREATE TABLE `types_places` (
   `description` varchar(1000) DEFAULT NULL,
   `units` varchar(15) NOT NULL,
   `id_area` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 CREATE TABLE `users` (
   `id_users` int NOT NULL,
-  `name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `mail` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `name` varchar(120) NOT NULL,
+  `mail` varchar(120) NOT NULL,
   `phone` varchar(15) DEFAULT NULL,
-  `password` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `password` varchar(120) NOT NULL,
   `payment_card` varchar(50) DEFAULT NULL,
   `iat` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 INSERT INTO `users` (`id_users`, `name`, `mail`, `phone`, `password`, `payment_card`, `iat`) VALUES
 (1, 'SergeyS', 'lefdgghgh@m.ru', '', '$2y$10$piY1DwWEDA0UsQOkgUhnRufrSi.NMMzmWdwm8oU/vJF6rb9Arxrk6', '', 1649544539),
@@ -307,6 +299,4 @@ ALTER TABLE `ticket`
 ALTER TABLE `types_places`
   ADD CONSTRAINT `types_places_ibfk_1` FOREIGN KEY (`id_area`) REFERENCES `area` (`id_area`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
