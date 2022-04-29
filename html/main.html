@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SOK</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="pic/logo.png" alt="no" />
+        </div>
+        <div>
+            <ul class ="menu">
+                <li><a>Организаторам</a>
+                    <ul class="submenu">
+                        <li><a href='registration-org.html'>Регистрация</a></li>
+                        <li><a href='authorization.html'>Авторизация</a></li>
+                    </ul>
+                </li>
+
+            </ul>    
+        </div>
+        <div>
+            <ul class ="menu">
+                <li><a>Пользователю</a>
+                    <ul class="submenu">
+                        <li><a href='registration-user.html'>Регистрация</a></li>
+                        <li><a href=#>Авторизация</a></li>
+                    </ul>
+                </li>
+
+            </ul>    
+        </div>
+    </header>
+    <div>
+        <div class = "main-image">
+            <img src = "pic\concert.png">     
+        </div>
+        <div class="main-name">
+            
+            <p>Сервис</p>  
+            <p>Организации</p>
+            <p style="color: #FAC710;">Концертов</p>   
+        </div>
+    </div>
+
+    <section id="slider_bl">
+        <div class="wrapper">
+            <input checked type=radio name="slider" id="slide1" />
+            <input type=radio name="slider" id="slide2" />
+            <input type=radio name="slider" id="slide3" />
+            <input type=radio name="slider" id="slide4" />
+            <div class="slider-wrapper">
+                <div class=inner>
+                    <article>
+                        <div class="info top-left">
+                            <h3>Слайдер 1</h3>
+                        </div>
+                        <img src="pic/slider.png" />
+                    </article>
+                    <article>
+                        <div class="info bottom-right">
+                            <h3>Слайдер 2</h3>
+                        </div>
+                    <img src="pic/slider2.png" />
+                    </article>
+                    <article>
+                        <div class="info bottom-left">
+                            <h3>Слайдер 3</h3>
+                        </div>
+                        <img src="pic/slider3.png" />
+                    </article>
+                    <article>
+                        <div class="info top-right">
+                            <h3>Слайдер 4</h3>
+                        </div>
+                        <img src="pic/slider4.png" />
+                    </article>
+                </div>
+            </div>
+            <div class="slider-prev-next-control">
+                <label for=slide1></label>
+                <label for=slide2></label>
+                <label for=slide3></label>
+                <label for=slide4></label>
+            </div>
+            <div class="slider-dot-control">
+                <label for=slide1></label>
+                <label for=slide2></label>
+                <label for=slide3></label>
+                <label for=slide4></label>
+            </div>
+        </div>
+
+
+    </section>
+    <div id = "Searh">
+        <div>
+            <form class="input">
+                <input type="text" placeholder="Название...">
+            </form>
+        </div>
+        <form class="input-select">
+            <div>
+                <div>
+                    <select class="select">
+                        <option>
+                            Жанр
+                        </option>
+                    </select>
+                </div>
+                <div style="justify-content: center;">
+                    <select class="select">
+                        <option>
+                            Город
+                        </option>
+                    </select>
+                </div>
+                <div style="justify-content: flex-end;">
+                    <select class="select">
+                        <option>
+                            Площадка
+                        </option>
+                    </select>
+                </div>
+                
+            </div>
+        </form>
+
+        
+        <form class="button-searh">
+            <div class="button">
+                <a >Найти</a>
+            </div>
+        </form>
+            
+        <!-- <form class="button-searh"> -->
+            <div class="button">
+                <a href="page-conserts.html">Другие концерты</a>
+            </div>
+        <!-- </form> -->
+            
+    </div>
+
+
+    <footer></footer>
+</body>
+</html>
