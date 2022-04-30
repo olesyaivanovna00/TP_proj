@@ -4,7 +4,8 @@ CREATE TABLE `administrator_sites` (
   `password` varchar(120) NOT NULL,
   `mail` varchar(120) NOT NULL,
   `phone` varchar(15) DEFAULT NULL,
-  `id_city` int NOT NULL
+  `id_city` int NOT NULL,
+  `iat` int DEFAULT NULL
 );
 
 CREATE TABLE `area` (
@@ -89,7 +90,8 @@ CREATE TABLE `organizer` (
   `mail` varchar(120) NOT NULL,
   `phone` varchar(15) DEFAULT NULL,
   `payment_card` varchar(50) DEFAULT NULL,
-  `id_city` int NOT NULL
+  `id_city` int NOT NULL,
+  `iat` int DEFAULT NULL
 );
 
 CREATE TABLE `place_hall` (
@@ -126,8 +128,21 @@ CREATE TABLE `users` (
   `mail` varchar(120) NOT NULL,
   `phone` varchar(15) DEFAULT NULL,
   `password` varchar(120) NOT NULL,
-  `payment_card` varchar(50) DEFAULT NULL
+  `payment_card` varchar(50) DEFAULT NULL,
+  `iat` int DEFAULT NULL
 );
+
+INSERT INTO `users` (`id_users`, `name`, `mail`, `phone`, `password`, `payment_card`, `iat`) VALUES
+(1, 'SergeyS', 'lefdgghgh@m.ru', '', '$2y$10$piY1DwWEDA0UsQOkgUhnRufrSi.NMMzmWdwm8oU/vJF6rb9Arxrk6', '', 1649544539),
+(3, 'Sergey', 'lesdgfs@m.ru', '89204008935', '$2y$10$a/h3yDdYRAZhS/fkEz7dc.gnH/dFaqnrXAJoEz9Ipmy5GKm1aUL3m', '', 0),
+(4, 'Sergey', 'lesdgfgjfs@m.ru', '', '$2y$10$SMjSq6To2g1/cW2brf0aSep4TjEhpIXWXU1zgDI0peVzKbNKM85vi', '', 0),
+(5, 'Sergey', 'uyo', '', '$2y$10$b1Fp7mihhFuRgBa0y/VuE.yLqbs4iPvPd7fDkuAwrIbnaau.HdG3G', '', 0),
+(7, 'Serdbhgey', 'lesbdsdgfs@m.ru', '', '$2y$10$mWeTFOnOwOxKuPEPs73MC.ySbaigNIhqfdXxVAjjjw8bTKHwRtrce', '', 0),
+(8, 'Serdbhgey', 'ldfgdsdgfs@m.ru', '', '$2y$10$56VKTTayooMDJRttGWrwlOzxU7HE6cfrxi3XiAKc2TnOMeumBmiWy', '', 0),
+(9, 'SerSer', 'ld@m.ru', '89', '$2y$10$OQdoAnJ4jbZgWinFoCdDKe6PXfy/76vaKz.QYncYgRJBpJNxyeHvy', '456456', 1650324577),
+(10, 'Влад', 'vl@g.ru', '79854654654', '$2y$10$o9YKqBe9dmkUd1AeursB1ucY87Ay7F40sj/fNVFTqKVDxy5YBKxUe', '5755454457', 1650732724),
+(11, 'ant', 'a@m.r', '', '$2y$10$ctKRcInGJwDg4T3ZJEUBKuU883X7/JH37CsoJkBZ/w6dHjA10kypa', '', 1650736094),
+(12, 'HHHH', 'H@m.u', '8767786', '$2y$10$lntZOjxmB8u6VOFeRhI1.ekeWXdmxXeVpkwNyh7EgytLdTpaO942O', '425432', NULL);
 
 
 ALTER TABLE `administrator_sites`
@@ -239,7 +254,7 @@ ALTER TABLE `types_places`
   MODIFY `id_types_places` int NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `users`
-  MODIFY `id_users` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_users` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 
 ALTER TABLE `administrator_sites`
@@ -283,3 +298,5 @@ ALTER TABLE `ticket`
 
 ALTER TABLE `types_places`
   ADD CONSTRAINT `types_places_ibfk_1` FOREIGN KEY (`id_area`) REFERENCES `area` (`id_area`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
