@@ -69,7 +69,7 @@ if ($jwt) {
                         "name" => $users->name,
                         "mail" => $users->mail,
                         "phone" => $users->phone,
-                        "payment_card" => $users->payment_card,
+                        "payment_card" => $users->payment_card
                     )
                 ));
             }

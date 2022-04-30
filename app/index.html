@@ -63,9 +63,10 @@
         crossorigin="anonymous"></script>
 
     <script>
+
         // jQuery код
         jQuery(function ($) {
-
+            let addressSOK = 'sok';
             // показать форму регистрации
             $(document).on('click', '#sign_up', function () {
 
@@ -73,20 +74,25 @@
                 <h2>Регистрация</h2>
                 <form id='sign_up_form'>
                     <div class="form-group">
-                        <label for="firstname">Имя</label>
-                        <input type="text" class="form-control" name="firstname" id="firstname" required />
+                        <label for="name">Имя</label>
+                        <input type="text" class="form-control" name="name" id="name" required />
                     </div>
-    
+                     
                     <div class="form-group">
-                        <label for="lastname">Фамилия</label>
-                        <input type="text" class="form-control" name="lastname" id="lastname" required />
+                        <label for="mail">Email</label>
+                        <input type="email" class="form-control" name="mail" id="mail" required />
                     </div>
-    
+
                     <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" class="form-control" name="email" id="email" required />
+                        <label for="phone">Телефон</label>
+                        <input type="text" class="form-control" name="phone" id="phone"  />
                     </div>
-    
+
+                    <div class="form-group">
+                        <label for="payment_card">Карта</label>
+                        <input type="text" class="form-control" name="payment_card" id="payment_card" />
+                    </div>
+
                     <div class="form-group">
                         <label for="password">Пароль</label>
                         <input type="password" class="form-control" name="password" id="password" required />
@@ -109,7 +115,7 @@
 
                 // отправить данные формы в API
                 $.ajax({
-                    url: "http://sok/api/users/create_users.php",
+                    url: "http://" + addressSOK + "/api/users/create_users.php",
                     type: "POST",
                     contentType: 'application/json',
                     data: form_data,
@@ -142,7 +148,7 @@
 
                 // отправить данные формы в API
                 $.ajax({
-                    url: "http://sok/api/users/login.php",
+                    url: "http://" + addressSOK + "/api/users/login.php",
                     type: "POST",
                     contentType: 'application/json',
                     data: form_data,
@@ -172,6 +178,7 @@
                 clearResponse();
             });
 
+            //показывает страницу обновления данных
             $(document).on('click', '#update_account', function () {
                 showUpdateAccountForm();
             });
@@ -202,7 +209,7 @@
 
                 // отправить данные формы в API
                 $.ajax({
-                    url: "http://sok/api/users/update_users.php",
+                    url: "http://" + addressSOK + "/api/users/update_users.php",
                     type: "POST",
                     contentType: 'application/json',
                     data: form_data,
@@ -291,7 +298,7 @@
 
                 // валидация JWT для проверки доступа
                 var jwt = getCookie('jwt');
-                $.post("http://sok/api/users/validate_token.php", JSON.stringify({ jwt: jwt })).done(function (result) {
+                $.post("http://" + addressSOK + "/api/users/validate_token.php", JSON.stringify({ jwt: jwt })).done(function (result) {
 
                     // если прошел валидацию, показать домашнюю страницу
                     var html = `
@@ -340,10 +347,11 @@
                 $("#logout").show();
             }
 
+            // функция показывает HTML-форму для обновления данных о пользователе.
             function showUpdateAccountForm() {
                 // валидация JWT для проверки доступа
                 var jwt = getCookie('jwt');
-                $.post("http://sok/api/users/information_update_users.php", JSON.stringify({ jwt: jwt })).done(function (result) {
+                $.post("http://" + addressSOK + "/api/users/information_update_users.php", JSON.stringify({ jwt: jwt })).done(function (result) {
 
                     // если валидация прошла успешно, покажем данные пользователя в форме
                     var html = `
@@ -361,12 +369,12 @@
 
                 <div class="form-group">
                     <label for="phone">Телефон</label>
-                    <input type="text" class="form-control" name="phone" id="phone" required value="` + result.data.phone + `" />
+                    <input type="text" class="form-control" name="phone" id="phone" value="` + result.data.phone + `" />
                 </div>
 
                 <div class="form-group">
                     <label for="payment_card">Банковская карта</label>
-                    <input type="text" class="form-control" name="payment_card" id="payment_card" required value="` + result.data.payment_card + `" />
+                    <input type="text" class="form-control" name="payment_card" id="payment_card" value="` + result.data.payment_card + `" />
                 </div>
 
                 <div class="form-group">
