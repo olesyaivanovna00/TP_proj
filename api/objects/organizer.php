@@ -1,18 +1,20 @@
 <?php
-class Users
+class Organizer
 {
 
-    // подключение к базе данных и таблице 'users'
+    // подключение к базе данных и таблице 'organizer'
     private $conn;
-    private $table_name = "users";
+    private $table_name = "organizer";
 
     // свойства объекта
-    public $id_users;
-    public $name;
+    public $id_organizer;
+    public $title;
+    public $login;
+    public $password;
     public $mail;
     public $phone;
-    public $password;
     public $payment_card;
+    public $id_city;
     public $iat;
 
 
@@ -22,34 +24,40 @@ class Users
         $this->conn = $db;
     }
 
-    // Создание нового пользователя
+    // Создание нового организатора
     function create()
     {
 
         // Вставляем запрос
         $query = "INSERT INTO " . $this->table_name . "
             SET
-                name = :name,
+                title = :title,
+                login = :login,
+                password = :password,
                 mail = :mail,
                 phone = :phone,
-                password = :password,
-                payment_card = :payment_card";
+                payment_card = :payment_card,
+                id_city = :id_city";
 
         // подготовка запроса
         $stmt = $this->conn->prepare($query);
 
         // инъекция
-        $this->name = htmlspecialchars(strip_tags($this->name));
+        $this->title = htmlspecialchars(strip_tags($this->title));
+        $this->login = htmlspecialchars(strip_tags($this->login));
+        $this->password = htmlspecialchars(strip_tags($this->password));
         $this->mail = htmlspecialchars(strip_tags($this->mail));
         $this->phone = htmlspecialchars(strip_tags($this->phone));
-        $this->password = htmlspecialchars(strip_tags($this->password));
         $this->payment_card = htmlspecialchars(strip_tags($this->payment_card));
+        $this->id_city = htmlspecialchars(strip_tags($this->id_city));
 
         // привязываем значения
-        $stmt->bindParam(':name', $this->name);
+        $stmt->bindParam(':title', $this->title);
+        $stmt->bindParam(':login', $this->login);
         $stmt->bindParam(':mail', $this->mail);
-        $stmt->bindParam(':phone', $this->phone);
+        $stmt->bindParam('phone', $this->phone);
         $stmt->bindParam(':payment_card', $this->payment_card);
+        $stmt->bindParam(':id_city', $this->id_city);
 
         // для защиты пароля
         // хешируем пароль перед сохранением в базу данных
@@ -70,7 +78,7 @@ class Users
     {
 
         // запрос, чтобы проверить, существует ли электронная почта
-        $query = "SELECT id_users, name, mail, phone, password, payment_card, iat
+        $query = "SELECT id_organizer, title, login, password, mail, phone, payment_card, id_city, iat
             FROM " . $this->table_name . "
             WHERE mail = :mail
             LIMIT 0,1";
@@ -98,10 +106,14 @@ class Users
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
             // присвоим значения свойствам объекта
-            $this->id_users = $row['id_users'];
-            $this->name = $row['name'];
-            $this->mail = $row['mail'];
+            $this->id_organizer = $row['id_organizer'];
+            $this->title = $row['title'];
+            $this->login = $row['login'];
             $this->password = $row['password'];
+            $this->mail = $row['mail'];
+            $this->phone = $row['phone'];
+            $this->payment_card = $row['payment_card'];
+            $this->id_city = $row['id_city'];
             $this->iat = $row['iat'];
 
             // вернём 'true', потому что в базе данных существует электронная почта
@@ -112,7 +124,7 @@ class Users
         return false;
     }
 
-    // обновить запись пользователя
+    // обновить запись организатора
     public function update()
     {
 
@@ -122,29 +134,36 @@ class Users
         // если не введен пароль - не обновлять пароль
         $query = "UPDATE " . $this->table_name . "
             SET
-                name = :name,
+                title = :title,
+                login = :login,
                 mail = :mail,
                 phone = :phone,
-                payment_card = :payment_card
+                payment_card = :payment_card,
+                id_city = :id_city
                 {$password_set}
-            WHERE id_users = :id_users";
+            WHERE id_organizer = :id_organizer";
 
         // подготовка запроса
         $stmt = $this->conn->prepare($query);
 
         // инъекция (очистка)
-        $this->name = htmlspecialchars(strip_tags($this->name));
+        $this->title = htmlspecialchars(strip_tags($this->title));
+        $this->login = htmlspecialchars(strip_tags($this->login));
         $this->mail = htmlspecialchars(strip_tags($this->mail));
         $this->phone = htmlspecialchars(strip_tags($this->phone));
         $this->payment_card = htmlspecialchars(strip_tags($this->payment_card));
+        $this->id_city = htmlspecialchars(strip_tags($this->id_city));
+
 
         // привязываем значения с HTML формы
-        $stmt->bindParam(':name', $this->name);
+        $stmt->bindParam(':title', $this->title);
+        $stmt->bindParam(':login', $this->login);
         $stmt->bindParam(':mail', $this->mail);
         $stmt->bindParam(':phone', $this->phone);
         $stmt->bindParam(':payment_card', $this->payment_card);
+        $stmt->bindParam(':id_city', $this->id_city);
 
-        // метод password_hash () для защиты пароля пользователя в базе данных
+        // метод password_hash () для защиты пароля организатора в базе данных
         if (!empty($this->password)) {
             $this->password = htmlspecialchars(strip_tags($this->password));
             $password_hash = password_hash($this->password, PASSWORD_BCRYPT);
@@ -152,9 +171,9 @@ class Users
         }
 
         // уникальный идентификатор записи для редактирования
-        $stmt->bindParam(':id_users', $this->id_users);
+        $stmt->bindParam(':id_organizer', $this->id_organizer);
 
-        // Если выполнение успешно, то информация о пользователе будет сохранена в базе данных
+        // Если выполнение успешно, то информация об организаторе будет сохранена в базе данных
         if ($stmt->execute()) {
             return true;
         }
@@ -162,14 +181,14 @@ class Users
         return false;
     }
 
-    // обновить IAT пользователя
+    // обновить IAT организатора
     public function updateIAT()
     {
 
         $query = "UPDATE " . $this->table_name . "
             SET
                 iat = :iat                
-            WHERE id_users = :id_users";
+            WHERE id_organizer = :id_organizer";
 
         // подготовка запроса
         $stmt = $this->conn->prepare($query);
@@ -181,9 +200,9 @@ class Users
         $stmt->bindParam(':iat', $this->iat);
 
         // уникальный идентификатор записи для редактирования
-        $stmt->bindParam(':id_users', $this->id_users);
+        $stmt->bindParam(':id_organizer', $this->id_organizer);
 
-        // Если выполнение успешно, то информация о IAT пользователя будет сохранена в базе данных
+        // Если выполнение успешно, то информация о IAT организатора будет сохранена в базе данных
         if ($stmt->execute()) {
             return true;
         }
@@ -191,24 +210,24 @@ class Users
         return false;
     }
 
-    // проверить IAT пользователя
+    // проверить IAT организатора
     public function checkIAT()
     {
 
-        // запрос, чтобы проверить, верно ли IAT пользователя
-        $query = "SELECT id_users, iat
-            FROM " . $this->table_name . "
-            WHERE id_users = :id_users
-            LIMIT 0,1";
+        // запрос, чтобы проверить, верно ли IAT организатора
+        $query = "SELECT id_organizer, iat
+               FROM " . $this->table_name . "
+               WHERE id_organizer = :id_organizer
+               LIMIT 0,1";
 
         // подготовка запроса
         $stmt = $this->conn->prepare($query);
 
         // инъекция
-        $this->id_users = htmlspecialchars(strip_tags($this->id_users));
+        $this->id_organizer = htmlspecialchars(strip_tags($this->id_organizer));
 
-        // привязываем значение id_users
-        $stmt->bindParam(':id_users', $this->id_users);
+        // привязываем значение id_organizer
+        $stmt->bindParam(':id_organizer', $this->id_organizer);
 
         // выполняем запрос
         $stmt->execute();
@@ -216,7 +235,7 @@ class Users
         // получаем количество строк
         $num = $stmt->rowCount();
 
-        // если IAT пользователя существует,
+        // если IAT организатора существует,
         // то проверим является ли действительным токен
         if ($num > 0) {
 
@@ -225,48 +244,48 @@ class Users
 
             if ($this->iat == $row['iat']) {
 
-                // вернём 'true', потому что в базе данных IAT пользователя соответствует токену
+                // вернём 'true', потому что в базе данных IAT организатора соответствует токену
                 return true;
             }
         }
 
-        // вернём 'false', если IAT пользователя не соответствует токену 
+        // вернём 'false', если IAT организатора не соответствует токену 
         return false;
     }
 
-    // проверить SUB пользователя
+    // проверить SUB организатора
     public function checkSUB()
     {
-        // если SUB пользователя существует,
+        // если SUB организатора существует,
         // то проверим является ли он правильным
         if ($this->sub == $this->subCheck) {
 
-            // вернём 'true', потому что SUB пользователя соответствует токену
+            // вернём 'true', потому что SUB организатора соответствует токену
             return true;
         }
 
-        // вернём 'false', если SUB пользователя не соответствует токену 
+        // вернём 'false', если SUB организатора не соответствует токену 
         return false;
     }
 
-    // получение информации о пользователе для обновления данных о нем
-    function information_users()
+    // получение информации о организаторе для обновления данных о нем
+    function information_organizer()
     {
 
-        // запрос, чтобы получить данные пользователя
-        $query = "SELECT id_users, name, mail, phone, payment_card
+        // запрос, чтобы получить данные организатора
+        $query = "SELECT id_organizer, title, login, mail, phone, payment_card, id_city
            FROM " . $this->table_name . "
-           WHERE id_users = :id_users
+           WHERE id_organizer = :id_organizer
            LIMIT 0,1";
 
         // подготовка запроса
         $stmt = $this->conn->prepare($query);
 
         // инъекция
-        $this->id_users = htmlspecialchars(strip_tags($this->id_users));
+        $this->id_organizer = htmlspecialchars(strip_tags($this->id_organizer));
 
-        // привязываем значение id_users
-        $stmt->bindParam(':id_users', $this->id_users);
+        // привязываем значение id_organizer
+        $stmt->bindParam(':id_organizer', $this->id_organizer);
 
         // выполняем запрос
         $stmt->execute();
@@ -274,24 +293,26 @@ class Users
         // получаем количество строк
         $num = $stmt->rowCount();
 
-        // если пользователь есть 
+        // если организатор есть 
         if ($num > 0) {
 
             // получаем значения
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
             // присвоим значения свойствам объекта
-            $this->id_users = $row['id_users'];
-            $this->name = $row['name'];
+            $this->id_organizer = $row['id_organizer'];
+            $this->title = $row['title'];
+            $this->login = $row['login'];
             $this->mail = $row['mail'];
             $this->phone = $row['phone'];
             $this->payment_card = $row['payment_card'];
+            $this->id_city = $row['id_city'];
 
-            // вернём 'true', потому что информация о пользователе есть
+            // вернём 'true', потому что информация о организаторе есть
             return true;
         }
 
-        // вернём 'false', если информации о пользователе нет
+        // вернём 'false', если информации о организаторе нет
         return false;
     }
 }

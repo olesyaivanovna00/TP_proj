@@ -65,7 +65,7 @@ if ($jwt) {
             // устанавливаем значения iat для пользователя 
             $users->iat = $iat;
 
-            // создание пользователя
+            // обновление пользователя
             if ($users->update() && $users->updateIAT()) {
                 // нам нужно заново сгенерировать JWT, потому что данные пользователя могут отличаться
                 $token = array(
@@ -76,7 +76,7 @@ if ($jwt) {
                     "data" => array(
                         "id_users" => $users->id_users,
                         "name" => $users->name,
-                        "mail" => $users->mail,
+                        "mail" => $users->mail
                     )
                 );
 

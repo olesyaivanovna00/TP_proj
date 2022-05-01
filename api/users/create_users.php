@@ -34,14 +34,27 @@ if (
     !empty($users->mail) &&
     (!empty($users->phone) || $users->phone == "") &&
     !empty($users->password) &&
-    (!empty($users->payment_card) || $users->payment_card == "") &&
-    $users->create()
+    (!empty($users->payment_card) || $users->payment_card == "")
 ) {
-    // устанавливаем код ответа
-    http_response_code(200);
 
-    // покажем сообщение о том, что пользователь был создан
-    echo json_encode(array("message" => "Пользователь был создан."));
+    // если все параметры переданы, создаем пользователя
+    if ($users->create()) {
+        // устанавливаем код ответа
+        http_response_code(200);
+
+        // покажем сообщение о том, что пользователь был создан
+        echo json_encode(array("message" => "Пользователь был создан."));
+    }
+
+    // сообщение, если не удаётся создать пользователя
+    else {
+
+        // устанавливаем код ответа
+        http_response_code(400);
+
+        // покажем сообщение о том, что создать пользователя не удалось
+        echo json_encode(array("message" => "Невозможно создать пользователя."));
+    }
 }
 
 // сообщение, если не удаётся создать пользователя
@@ -51,5 +64,5 @@ else {
     http_response_code(400);
 
     // покажем сообщение о том, что создать пользователя не удалось
-    echo json_encode(array("message" => "Невозможно создать пользователя."));
+    echo json_encode(array("message" => "Невозможно создать пользователя, не хватает параметров"));
 }
