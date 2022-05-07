@@ -5,6 +5,36 @@ info:
 servers:
   - url: http://SOK/api/
 paths:
+  /users/create_users.php:
+    post:
+      tags:
+        - users
+      summary: Создание пользователя
+      description: Создание пользователя
+      operationId: create_users
+      requestBody:
+        description: Необходимо передать верный name mail phone password payment_card
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/users-create_users"
+        required: true
+      responses:
+        200:
+          description: Пользователь был создан.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-create_users-200"
+        401:
+          description: Невозможно создать пользователя, не хватает параметров.
+            <br>
+            Невозможно создать пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-create_users-400"
+
   /users/login.php:
     post:
       tags:
@@ -35,6 +65,38 @@ paths:
               schema:
                 $ref: "#/components/schemas/users-login-401"
 
+  /users/update_users.php:
+    post:
+      tags:
+        - users
+      summary: Обновление данных пользователя
+      description: Обновление name mail phone password payment_card пользователя
+      operationId: update_users
+      requestBody:
+        description: Необходимо передать jwt и новые параметры для name mail phone password payment_card если их необходимо изменить
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/users-update_users"
+        required: true
+      responses:
+        200:
+          description: Пользователь был обновлён.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-update_users-200"
+        401:
+          description: Доступ закрыт.
+            <br>
+            Токен устарел, невозможно обновить пользователя.
+            <br>
+            Невозможно обновить пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-update_users-401"
+
 components:
   schemas:
     users:
@@ -56,6 +118,58 @@ components:
         iat:
           type: integer
           format: int64
+
+    users-create_users:
+      type: object
+      properties:
+        name:
+          type: string
+        mail:
+          type: string
+        phone:
+          type: string
+        password:
+          type: string
+        payment_card:
+          type: string
+    users-create_users-200:
+      type: object
+      properties:
+        message:
+          type: string
+    users-create_users-400:
+      type: object
+      properties:
+        message:
+          type: string
+
+    users-update_users:
+      type: object
+      properties:
+        jwt:
+          type: string
+        name:
+          type: string
+        mail:
+          type: string
+        phone:
+          type: string
+        password:
+          type: string
+        payment_card:
+          type: string
+    users-update_users-200:
+      type: object
+      properties:
+        message:
+          type: string
+        jwt:
+          type: string
+    users-update_users-401:
+      type: object
+      properties:
+        message:
+          type: string
 
     users-login:
       type: object
