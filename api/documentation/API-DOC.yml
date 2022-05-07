@@ -1,0 +1,78 @@
+openapi: "3.0.2"
+info:
+  title: API SOK
+  version: "1.0"
+servers:
+  - url: http://SOK/api/
+paths:
+  /users/login.php:
+    post:
+      tags:
+        - users
+      summary: Вход в систему
+      description: Вход в систему по mail и password
+      operationId: login
+      requestBody:
+        description: Необходимо передать верный mail и password
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/users-login"
+        required: true
+      responses:
+        200:
+          description: Успешный вход в систему.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-login-200"
+        401:
+          description: Ошибка входа.
+            <br>
+            Невозможно обновить вход пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-login-401"
+
+components:
+  schemas:
+    users:
+      type: object
+      properties:
+        id_users:
+          type: integer
+          format: int64
+        name:
+          type: string
+        mail:
+          type: string
+        phone:
+          type: string
+        password:
+          type: string
+        payment_card:
+          type: string
+        iat:
+          type: integer
+          format: int64
+
+    users-login:
+      type: object
+      properties:
+        mail:
+          type: string
+        password:
+          type: string
+    users-login-200:
+      type: object
+      properties:
+        message:
+          type: string
+        jwt:
+          type: string
+    users-login-401:
+      type: object
+      properties:
+        message:
+          type: string
