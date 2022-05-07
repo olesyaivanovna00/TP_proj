@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Организовать концерт</title>
+    <link rel="stylesheet" href="style.css" />
+
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="main.html"><img src="/pic/logo.png" alt="no" href="main.html" /></a>
+            <!-- <img src="pic/logo.png" alt="no" href="main.html" /> -->
+        </div>
+        <div class="button">
+            <a href = "org-main.html">Личный кабинет</a>
+        </div>
+    </header>
+
+    <div id="wrap">
+        <div class ="side-bar">
+            <a href="org-main.html">Мероприятия</a>
+            <a style="padding-top: 2vh;">Онлайн-концерты</a>
+        </div>
+
+        <div class = "concerts">
+            <a>Организация концерта</a>
+            <div class = "forms">
+                <form  class="name">
+                    <a style="font-size: 16pt;">Название: </a>
+                    <input type="text" placeholder="Название">
+                </form>
+    
+                <div class="genre">
+                    <a style="font-size: 16pt;">Жанр: </a>
+
+                    <select class="select">
+                        <option>
+                            Жанр
+                        </option>
+                    </select>
+                </div>
+                <form class="date">
+                    <a style="font-size: 16pt;">Дата: </a>
+                    <input type="date" placeholder="Дата">
+                </form>
+    
+                <div class="city">
+                    <a style="font-size: 16pt;">Город: </a>
+
+                    <select class="select">
+                        <option>
+                            Город
+                        </option>
+                    </select>
+                </div>
+
+                <div class="place">
+                    <a style="font-size: 16pt;">Площадка: </a>
+
+                    <select class="select">
+                        <option>
+                            Площадка
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <a style="margin-top: 20vh;">Билеты</a>
+            <div class = "forms">
+                
+                <form  id="dance-tickets">
+                    <div id ="dance">
+                        <input class ="chek" type="checkbox">
+                        <a style="font-size: 16pt;">Танцпартер: </a>
+                        <input type="number" placeholder="Цена">
+                        <input type="number" placeholder="Количество">
+                    </div>
+                    
+                        <form id="up-price">
+                            <div class="upper">
+                            <input class ="chek" type="checkbox">
+                            <a style="font-size: 16pt;">Поднимать цену, если продано: </a>
+                            <input style="width:100px" type="number" placeholder="Кол-во">
+                            <a style="font-size: 16pt;">на </a>
+                            <input style="width:100px" type="number" placeholder="Сумма">
+                            </div>
+                        </form>
+                </form>
+    
+                <form  id="vip-tickets">
+                    <input class ="chek" type="checkbox">
+                    <a style="font-size: 16pt;">VIP-билеты: </a>
+                    <input type="number" placeholder="Цена">
+                    <input type="number" placeholder="Количество">
+                </form>
+
+                <form  id="table-tickets">
+                    <input class ="chek" type="checkbox">
+                    <a style="font-size: 16pt;">Столики: </a>
+                    <input type="number" placeholder="Цена">
+                    <input type="number" placeholder="Количество">
+                </form>
+
+                <form  id="chair-tickets">
+                    <input class ="chek" type="checkbox">
+                    <a style="font-size: 16pt;">Места: </a>
+                    <input type="number" placeholder="Цена">
+                    <input type="number" placeholder="Количество">
+                </form>
+            </div>
+
+
+            <form id="add-auk">
+                <input class ="chek" type="checkbox">
+                <a>Аукцион</a>
+            </form>
+
+            <div class="forms">
+                <div class="ticket-type">
+                    <a style="font-size: 16pt;">Категория билетов: </a>
+
+                    <select class="select">
+                        <option>
+                            Билеты
+                        </option>
+                    </select>
+                </div>
+
+                <a style=" font-size: 16pt; padding-top: 3vh; margin: 1.5em">Условие начала:</a>
+                
+                <form id="start-ticket">
+                    <input class ="chek" type="checkbox">
+                    <a style="font-size: 16pt;">Осталось билетов: </a>
+                    <input style="width:100px" type="number" placeholder="Кол-во">
+                </form>
+                <form id="start-time">
+                    <input class ="chek" type="checkbox">
+                    <a style="font-size: 16pt;">До конца осталось: </a>
+                    <input style="width:100px" type="time" placeholder="Кол-во">
+                </form>
+                <form  class="step">
+                    <a style="font-size: 16pt;">Шаг увеличения: </a>
+                    <input type="number" placeholder="Название">
+                </form>
+                <form  class="how-long">
+                    <a style="font-size: 16pt;">Длительность: </a>
+                    <input type="time" placeholder="Название">
+                </form>
+            
+            </div>
+
+            <form style = "margin-top: 3vh;" class="button">
+                <a style = "color: #fff;"href = "create-promo.html">Создать промо </a>
+            </form>
+        
+        </div>
+    </div>
+    
+
+</body>
+</html>
