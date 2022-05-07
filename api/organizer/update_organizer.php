@@ -19,14 +19,14 @@ use Firebase\JWT\Key;
 
 // файлы, необходимые для подключения к базе данных
 include_once '../config/database.php';
-include_once '../objects/users.php';
+include_once '../objects/organizer.php';
 
 // получаем соединение с базой данных
 $database = new Database();
 $db = $database->getConnection();
 
-// создание объекта 'User'
-$users = new Users($db);
+// создание объекта 'Organizer'
+$organizer = new Organizer($db);
 
 // получаем данные
 $data = json_decode(file_get_contents("php://input"));
@@ -37,46 +37,48 @@ $jwt = isset($data->jwt) ? $data->jwt : "";
 // если JWT не пуст
 if ($jwt) {
 
-    // если декодирование выполнено успешно, показать данные пользователя
+    // если декодирование выполнено успешно, показать данные организатора
     try {
 
         // декодирование jwt
         $decoded = JWT::decode($jwt, new Key($key, 'HS256'));
 
-        // устанавливаем значения iat для пользователя 
-        $users->id_users = $decoded->data->id_users;
-        $users->iat = $decoded->iat;
+        // устанавливаем значения iat для организатора 
+        $organizer->id_organizer = $decoded->data->id_organizer;
+        $organizer->iat = $decoded->iat;
 
-        // устанавливаем значения sub для пользователя 
-        $users->sub = $decoded->sub;
-        $users->subCheck = $subU;
+        // устанавливаем значения sub для организатора 
+        $organizer->sub = $decoded->sub;
+        $organizer->subCheck = $subO;
 
         //проверяем значения
-        if ($users->checkIAT() && $users->checkSUB()) {
+        if ($organizer->checkIAT() && $organizer->checkSUB()) {
 
-            // Нам нужно установить отправленные данные (через форму HTML) в свойствах объекта пользователя
-            $users->id_users = $decoded->data->id_users;
-            $users->name = $data->name;
-            $users->mail = $data->mail;
-            $users->phone = $data->phone;
-            $users->password = $data->password;
-            $users->payment_card = $data->payment_card;
+            // Нам нужно установить отправленные данные (через форму HTML) в свойствах объекта организатора
+            $organizer->id_organizer = $decoded->data->id_organizer;
+            $organizer->title = $data->title;
+            $organizer->login = $data->login;
+            $organizer->password = $data->password;
+            $organizer->mail = $data->mail;
+            $organizer->phone = $data->phone;
+            $organizer->payment_card = $data->payment_card;
+            $organizer->id_city = $data->id_city;
 
-            // устанавливаем значения iat для пользователя 
-            $users->iat = $iat;
+            // устанавливаем значения iat для организатора 
+            $organizer->iat = $iat;
 
-            // обновление пользователя
-            if ($users->update() && $users->updateIAT()) {
-                // нам нужно заново сгенерировать JWT, потому что данные пользователя могут отличаться
+            // обновление организатора
+            if ($organizer->update() && $organizer->updateIAT()) {
+                // нам нужно заново сгенерировать JWT, потому что данные организатора могут отличаться
                 $token = array(
                     "iss" => $iss,
-                    "sub" => $subU,
+                    "sub" => $subO,
                     "aud" => $aud,
                     "iat" => $iat,
                     "data" => array(
-                        "id_users" => $users->id_users,
-                        "name" => $users->name,
-                        "mail" => $users->mail
+                        "id_organizer" => $organizer->id_organizer,
+                        "login" => $organizer->login,
+                        "mail" => $organizer->mail
                     )
                 );
 
@@ -88,29 +90,29 @@ if ($jwt) {
                 // ответ в формате JSON
                 echo json_encode(
                     array(
-                        "message" => "Пользователь был обновлён",
+                        "message" => "Организатор был обновлён",
                         "jwt" => $jwt
                     )
                 );
             }
 
-            // сообщение, если не удается обновить пользователя
+            // сообщение, если не удается обновить организатора
             else {
                 // код ответа
                 http_response_code(401);
 
                 // показать сообщение об ошибке
-                echo json_encode(array("message" => "Невозможно обновить пользователя."));
+                echo json_encode(array("message" => "Невозможно обновить организатора."));
             }
         }
 
-        // сообщение, если iat для пользователя устарел
+        // сообщение, если iat для организатора устарел
         else {
             // код ответа
             http_response_code(401);
 
             // показать сообщение об ошибке
-            echo json_encode(array("message" => "Токен устарел, невозможно обновить пользователя."));
+            echo json_encode(array("message" => "Токен устарел, невозможно обновить организатора."));
         }
     }
 
@@ -134,6 +136,6 @@ else {
     // код ответа
     http_response_code(401);
 
-    // сообщить пользователю что доступ запрещен
+    // сообщить организатору что доступ запрещен
     echo json_encode(array("message" => "Доступ закрыт."));
 }

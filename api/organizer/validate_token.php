@@ -25,7 +25,7 @@ include_once '../objects/organizer.php';
 $database = new Database();
 $db = $database->getConnection();
 
-// создание объекта 'User'
+// создание объекта 'Organizer'
 $organizer = new Organizer($db);
 
 // получаем значение веб-токена JSON
