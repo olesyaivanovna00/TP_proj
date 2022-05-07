@@ -66,11 +66,13 @@ class Organizer
 
         // Выполняем запрос
         // Если выполнение успешно, то информация о пользователе будет сохранена в базе данных
-        if ($stmt->execute()) {
-            return true;
+        try {
+            if ($stmt->execute()) {
+                return true;
+            }
+        } catch (Exception $e) {
+            return false;
         }
-
-        return false;
     }
 
     // проверка есть ли электронная почта в базе
@@ -174,11 +176,13 @@ class Organizer
         $stmt->bindParam(':id_organizer', $this->id_organizer);
 
         // Если выполнение успешно, то информация об организаторе будет сохранена в базе данных
-        if ($stmt->execute()) {
-            return true;
+        try {
+            if ($stmt->execute()) {
+                return true;
+            }
+        } catch (Exception $e) {
+            return false;
         }
-
-        return false;
     }
 
     // обновить IAT организатора
@@ -203,11 +207,13 @@ class Organizer
         $stmt->bindParam(':id_organizer', $this->id_organizer);
 
         // Если выполнение успешно, то информация о IAT организатора будет сохранена в базе данных
-        if ($stmt->execute()) {
-            return true;
+        try {
+            if ($stmt->execute()) {
+                return true;
+            }
+        } catch (Exception $e) {
+            return false;
         }
-
-        return false;
     }
 
     // проверить IAT организатора
