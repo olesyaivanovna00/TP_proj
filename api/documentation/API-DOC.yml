@@ -97,6 +97,38 @@ paths:
               schema:
                 $ref: "#/components/schemas/users-update_users-401"
 
+  /users/validate_token.php:
+    post:
+      tags:
+        - users
+      summary: Проверка токена
+      description: Проверка токена пользователя
+      operationId: validate_token
+      requestBody:
+        description: Необходимо передать jwt для проверки
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/users-validate_token"
+        required: true
+      responses:
+        200:
+          description: Доступ разрешен.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-validate_token-200"
+        401:
+          description: Доступ запрещён.
+            <br>
+            Доступ закрыт.
+            <br>
+            Токен устарел, доступ запрещён.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-validate_token-401"
+
 components:
   schemas:
     users:
@@ -118,6 +150,17 @@ components:
         iat:
           type: integer
           format: int64
+
+    users-jwt:
+      type: object
+      properties:
+        id_users:
+          type: integer
+          format: int64
+        name:
+          type: string
+        mail:
+          type: string
 
     users-create_users:
       type: object
@@ -186,6 +229,24 @@ components:
         jwt:
           type: string
     users-login-401:
+      type: object
+      properties:
+        message:
+          type: string
+
+    users-validate_token:
+      type: object
+      properties:
+        jwt:
+          type: string
+    users-validate_token-200:
+      type: object
+      properties:
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/users-jwt"
+    users-validate_token-401:
       type: object
       properties:
         message:
