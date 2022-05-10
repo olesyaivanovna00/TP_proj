@@ -48,6 +48,6 @@ else {
     // код ответа
     http_response_code(404);
 
-    // сообщаем, что город не найдены
+    // сообщаем, что город не найден
     echo json_encode(array("message" => "Город не найден."), JSON_UNESCAPED_UNICODE);
 }
