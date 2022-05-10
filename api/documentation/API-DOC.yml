@@ -67,7 +67,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/users-information_update_users-401"
 
-
   /users/login.php:
     post:
       tags:
