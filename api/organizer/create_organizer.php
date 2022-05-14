@@ -30,7 +30,7 @@ $organizer->phone = $data->phone;
 $organizer->payment_card = $data->payment_card;
 $organizer->id_city = $data->id_city;
 
-// создание пользователя
+// создание организатора
 if (
     !empty($organizer->title) &&
     !empty($organizer->login) &&
