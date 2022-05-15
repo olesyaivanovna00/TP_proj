@@ -181,7 +181,7 @@ class Users
         // инъекция (очистка)
         $this->iat = htmlspecialchars(strip_tags($this->iat));
 
-        // привязываем значения с HTML формы
+        // привязываем значения с сервера
         $stmt->bindParam(':iat', $this->iat);
 
         // уникальный идентификатор записи для редактирования
