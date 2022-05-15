@@ -65,4 +65,52 @@ class Area
             return false;
         }
     }
+
+    // получение информации о площадке
+    function information_area()
+    {
+
+        // запрос, чтобы получить данные площадки
+        $query = "SELECT id_area, id_administrator_sites, title, id_city, address, status, img_map
+           FROM " . $this->table_name . "
+           WHERE id_area = :id_area
+           LIMIT 0,1";
+
+        // подготовка запроса
+        $stmt = $this->conn->prepare($query);
+
+        // инъекция
+        $this->id_area = htmlspecialchars(strip_tags($this->id_area));
+
+        // привязываем значение id_area
+        $stmt->bindParam(':id_area', $this->id_area);
+
+        // выполняем запрос
+        $stmt->execute();
+
+        // получаем количество строк
+        $num = $stmt->rowCount();
+
+        // если площадка есть 
+        if ($num > 0) {
+
+            // получаем значения
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // присвоим значения свойствам объекта
+            $this->id_area = $row['id_area'];
+            $this->id_administrator_sites = $row['id_administrator_sites'];
+            $this->title = $row['title'];
+            $this->id_city = $row['id_city'];
+            $this->address = $row['address'];
+            $this->status = $row['status'];
+            $this->img_map = $row['img_map'];
+
+            // вернём 'true', потому что информация о площадке есть
+            return true;
+        }
+
+        // вернём 'false', если информации о площадке нет
+        return false;
+    }
 }
