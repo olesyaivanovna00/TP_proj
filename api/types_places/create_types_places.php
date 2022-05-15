@@ -63,6 +63,7 @@ if ($jwt) {
             $types_places->title = $data->title;
             $types_places->description = $data->description;
             $types_places->units = $data->units;
+            $types_places->status = $data->status;
             $types_places->id_area = $data->id_area;
 
             // создание типа мест
@@ -70,6 +71,7 @@ if ($jwt) {
                 !empty($types_places->title) &&
                 (!empty($types_places->description) || $types_places->description == "") &&
                 !empty($types_places->units) &&
+                !empty($types_places->status) &&
                 !empty($types_places->id_area)
             ) {
 
