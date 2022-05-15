@@ -65,57 +65,33 @@ if ($jwt) {
             $area->id_city = $data->id_city;
             $area->address = $data->address;
             $area->status = $data->status;
-            //$area->img_map = $data->img_map;
 
-            // создание площадки
-            if (
-                !empty($area->id_administrator_sites) &&
-                !empty($area->title) &&
-                !empty($area->id_city) &&
-                !empty($area->address) &&
-                !empty($area->status) //&&
-                //(!empty($area->img_map) || $area->img_map == "")
-            ) {
-
-                // если все параметры переданы, создаем площадку
-                if ($area->create()) {
-
-                    // устанавливаем код ответа
-                    http_response_code(200);
-
-                    // покажем сообщение о том, что площадка создана
-                    echo json_encode(array("message" => "Площадка создана."));
-                }
-
-                // сообщение, если не удаётся создать площадку
-                else {
-
-                    // устанавливаем код ответа
-                    http_response_code(400);
-
-                    // покажем сообщение о том, что создать площадку не удалось
-                    echo json_encode(array("message" => "Невозможно создать площадку."));
-                }
-            }
-
-            // сообщение, если не удаётся создать площадку
-            else {
+            // обновление площадки
+            if ($area->update()) {
 
                 // устанавливаем код ответа
-                http_response_code(400);
+                http_response_code(200);
 
-                // покажем сообщение о том, что создать площадку не удалось
-                echo json_encode(array("message" => "Невозможно создать площадку, не хватает параметров"));
+                // покажем сообщение о том, что площадка обновлена
+                echo json_encode(array("message" => "Площадка обновлена."));
+            }
+
+            // сообщение, если не удается обновить площадку
+            else {
+                // код ответа
+                http_response_code(401);
+
+                // показать сообщение об ошибке
+                echo json_encode(array("message" => "Невозможно обновить площадку."));
             }
         }
-
         // сообщение, если iat для администратора площадок устарел
         else {
             // код ответа
             http_response_code(401);
 
             // показать сообщение об ошибке
-            echo json_encode(array("message" => "Токен устарел, невозможно создать площадку."));
+            echo json_encode(array("message" => "Токен устарел, невозможно обновить площадку."));
         }
     }
 
