@@ -20,15 +20,15 @@ use Firebase\JWT\Key;
 // подключение к БД
 // файлы, необходимые для подключения к базе данных
 include_once '../config/database.php';
-include_once '../objects/area.php';
+include_once '../objects/types_places.php';
 include_once '../objects/administrator_sites.php';
 
 // получаем соединение с базой данных
 $database = new Database();
 $db = $database->getConnection();
 
-// создание объекта 'Area'
-$area = new Area($db);
+// создание объекта 'Types_places'
+$types_places = new Types_places($db);
 
 // создание объекта 'Administrator_sites'
 $administrator_sites = new Administrator_sites($db);
@@ -42,7 +42,7 @@ $jwt = isset($data->jwt) ? $data->jwt : "";
 // если JWT не пуст
 if ($jwt) {
 
-    // если декодирование выполнено успешно, показать данные площадки
+    // если декодирование выполнено успешно, показать данные типа мест
     try {
 
         // декодирование jwt
@@ -59,29 +59,29 @@ if ($jwt) {
         //проверяем значения
         if ($administrator_sites->checkIAT() && $administrator_sites->checkSUB()) {
 
-            // Нам нужно установить отправленные данные (через форму HTML) в свойствах объекта площадка
-            $area->title = $data->title;
-            $area->id_city = $data->id_city;
-            $area->address = $data->address;
-            $area->status = $data->status;
+            // Нам нужно установить отправленные данные (через форму HTML) в свойствах объекта тип мест
+            $types_places->title = $data->title;
+            $types_places->description = $data->description;
+            $types_places->units = $data->units;
+            $types_places->status = $data->status;
 
-            // обновление площадки
-            if ($area->update()) {
+            // обновление типа мест
+            if ($types_places->update()) {
 
                 // устанавливаем код ответа
                 http_response_code(200);
 
-                // покажем сообщение о том, что площадка обновлена
-                echo json_encode(array("message" => "Площадка обновлена."));
+                // покажем сообщение о том, что тип мест обновлен
+                echo json_encode(array("message" => "Тип мест обновлен."));
             }
 
-            // сообщение, если не удается обновить площадку
+            // сообщение, если не удается обновить тип мест
             else {
                 // код ответа
                 http_response_code(401);
 
                 // показать сообщение об ошибке
-                echo json_encode(array("message" => "Невозможно обновить площадку."));
+                echo json_encode(array("message" => "Невозможно обновить тип мест."));
             }
         }
         // сообщение, если iat для администратора площадок устарел
@@ -90,7 +90,7 @@ if ($jwt) {
             http_response_code(401);
 
             // показать сообщение об ошибке
-            echo json_encode(array("message" => "Токен устарел, невозможно обновить площадку."));
+            echo json_encode(array("message" => "Токен устарел, невозможно обновить тип мест."));
         }
     }
 

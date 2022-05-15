@@ -108,4 +108,45 @@ class Types_places
         // вернём 'false', если информации о типе мест нет
         return false;
     }
+
+    // обновить тип мест
+    public function update()
+    {
+
+        // Вставляем запрос
+        $query = "UPDATE " . $this->table_name . "
+            SET
+                title = :title,
+                description = :description,
+                units = :units,
+                status = :status
+            WHERE id_types_places = :id_types_places";
+
+        // подготовка запроса
+        $stmt = $this->conn->prepare($query);
+
+        // инъекция
+        $this->title = htmlspecialchars(strip_tags($this->title));
+        $this->description = htmlspecialchars(strip_tags($this->description));
+        $this->units = htmlspecialchars(strip_tags($this->units));
+        $this->status = htmlspecialchars(strip_tags($this->status));
+
+        // привязываем значения
+        $stmt->bindParam(':title', $this->title);
+        $stmt->bindParam(':description', $this->description);
+        $stmt->bindParam(':units', $this->units);
+        $stmt->bindParam(':status', $this->status);
+
+        // уникальный идентификатор записи для редактирования
+        $stmt->bindParam(':id_types_places', $this->id_types_places);
+
+        // Если выполнение успешно, то информация о типе мест будет сохранена в базе данных
+        try {
+            if ($stmt->execute()) {
+                return true;
+            }
+        } catch (Exception $e) {
+            return false;
+        }
+    }
 }

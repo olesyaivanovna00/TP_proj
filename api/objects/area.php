@@ -120,8 +120,7 @@ class Area
 
         // Вставляем запрос
         $query = "UPDATE " . $this->table_name . "
-            SET
-                id_administrator_sites = :id_administrator_sites,    
+            SET   
                 title = :title,
                 id_city = :id_city,
                 address = :address,
@@ -132,14 +131,12 @@ class Area
         $stmt = $this->conn->prepare($query);
 
         // инъекция
-        $this->id_administrator_sites = htmlspecialchars(strip_tags($this->id_administrator_sites));
         $this->title = htmlspecialchars(strip_tags($this->title));
         $this->id_city = htmlspecialchars(strip_tags($this->id_city));
         $this->address = htmlspecialchars(strip_tags($this->address));
         $this->status = htmlspecialchars(strip_tags($this->status));
 
         // привязываем значения с HTML формы
-        $stmt->bindParam(':id_administrator_sites', $this->id_administrator_sites);
         $stmt->bindParam(':title', $this->title);
         $stmt->bindParam(':id_city', $this->id_city);
         $stmt->bindParam(':address', $this->address);
@@ -148,7 +145,7 @@ class Area
         // уникальный идентификатор записи для редактирования
         $stmt->bindParam(':id_area', $this->id_area);
 
-        // Если выполнение успешно, то информация об организаторе будет сохранена в базе данных
+        // Если выполнение успешно, то информация о площадке будет сохранена в базе данных
         try {
             if ($stmt->execute()) {
                 return true;
