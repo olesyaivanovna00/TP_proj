@@ -52,7 +52,7 @@ class Area
         $stmt->bindParam(':title', $this->title);
         $stmt->bindParam(':id_city', $this->id_city);
         $stmt->bindParam(':address', $this->address);
-        $stmt->bindParam('status', $this->status);
+        $stmt->bindParam(':status', $this->status);
         //$stmt->bindParam(':img_map', $this->img_map);
 
         // Выполняем запрос
@@ -143,7 +143,7 @@ class Area
         $stmt->bindParam(':title', $this->title);
         $stmt->bindParam(':id_city', $this->id_city);
         $stmt->bindParam(':address', $this->address);
-        $stmt->bindParam('status', $this->status);
+        $stmt->bindParam(':status', $this->status);
 
         // уникальный идентификатор записи для редактирования
         $stmt->bindParam(':id_area', $this->id_area);
