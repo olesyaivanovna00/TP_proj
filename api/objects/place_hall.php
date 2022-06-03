@@ -113,4 +113,26 @@ class Place_hall
             return false;
         }
     }
+
+    // получение информации о всех местах в зале
+    function information_all_place_hall_area()
+    {
+
+        // запрос, чтобы получить данные мест в зале
+        $query = "SELECT id_place_hall, id_area, id_types_places, row, place, status, x_map, y_map
+           FROM " . $this->table_name . "
+           WHERE id_area = :id_area";
+
+        // подготовка запроса
+        $stmt = $this->conn->prepare($query);
+
+        // уникальный идентификатор записи для поиска всех мест в зале
+        $stmt->bindParam(':id_area', $this->id_area);
+
+        // выполняем запрос
+        $stmt->execute();
+
+        // вернём '$stmt', который содержит информацию о всех местах в зале
+        return $stmt;
+    }
 }
