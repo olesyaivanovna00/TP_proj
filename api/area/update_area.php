@@ -60,11 +60,12 @@ if ($jwt) {
         if ($administrator_sites->checkIAT() && $administrator_sites->checkSUB()) {
 
             // Нам нужно установить отправленные данные (через форму HTML) в свойствах объекта площадка
+            $area->id_area = $data->id_area;
             $area->title = $data->title;
             $area->id_city = $data->id_city;
             $area->address = $data->address;
             $area->status = $data->status;
-
+            
             // обновление площадки
             if ($area->update()) {
 
