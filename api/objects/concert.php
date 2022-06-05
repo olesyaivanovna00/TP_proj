@@ -56,7 +56,7 @@ class Concert
         $this->id_area = htmlspecialchars(strip_tags($this->id_area));
 
         // привязываем значения
-        $stmt->bindParam(':id_area', $this->id_area);
+        $stmt->bindParam(':id_organizer', $this->id_organizer);
         $stmt->bindParam(':date_concert', $this->date_concert);
         $stmt->bindParam(':time_start_sale', $this->time_start_sale);
         $stmt->bindParam(':time_end_sale', $this->time_end_sale);
@@ -66,6 +66,50 @@ class Concert
 
         // Выполняем запрос
         // Если выполнение успешно, то информация о новом концерте будет сохранена в базе данных
+        try {
+            if ($stmt->execute()) {
+                return true;
+            }
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    // обновить концерт
+    public function update()
+    {
+
+        // Вставляем запрос
+        $query = "UPDATE " . $this->table_name . "
+            SET
+                date_concert = :date_concert,
+                time_start_sale = :time_start_sale,
+                time_end_sale = :time_end_sale,
+                age_restriction = :age_restriction,
+                id_genre = :id_genre
+            WHERE id_concert = :id_concert";
+
+        // подготовка запроса
+        $stmt = $this->conn->prepare($query);
+
+        // инъекция
+        $this->date_concert = htmlspecialchars(strip_tags($this->date_concert));
+        $this->time_start_sale = htmlspecialchars(strip_tags($this->time_start_sale));
+        $this->time_end_sale = htmlspecialchars(strip_tags($this->time_end_sale));
+        $this->age_restriction = htmlspecialchars(strip_tags($this->age_restriction));
+        $this->id_genre = htmlspecialchars(strip_tags($this->id_genre));
+        
+        // привязываем значения
+        $stmt->bindParam(':date_concert', $this->date_concert);
+        $stmt->bindParam(':time_start_sale', $this->time_start_sale);
+        $stmt->bindParam(':time_end_sale', $this->time_end_sale);
+        $stmt->bindParam(':age_restriction', $this->age_restriction);
+        $stmt->bindParam(':id_genre', $this->id_genre);
+        
+        // уникальный идентификатор записи для редактирования
+        $stmt->bindParam(':id_concert', $this->id_concert);
+
+        // Если выполнение успешно, то информация о концерте будет сохранена в базе данных
         try {
             if ($stmt->execute()) {
                 return true;
