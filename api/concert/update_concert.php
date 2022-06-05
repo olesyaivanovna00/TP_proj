@@ -67,7 +67,7 @@ if ($jwt) {
             $concert->id_genre = $data->id_genre;
 
             // обновление концерта
-            if ($types_places->update_concert()) {
+            if ($concert->update_concert()) {
 
                 // устанавливаем код ответа
                 http_response_code(200);

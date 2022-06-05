@@ -153,4 +153,36 @@ class Concert
             return false;
         }
     }
+
+    // обновить трансляцию концерта
+    public function update_broadcast()
+    {
+
+        // Вставляем запрос
+        $query = "UPDATE " . $this->table_name . "
+            SET
+                broadcast = :broadcast                
+            WHERE id_concert = :id_concert";
+
+        // подготовка запроса
+        $stmt = $this->conn->prepare($query);
+
+        // инъекция
+        $this->broadcast = htmlspecialchars(strip_tags($this->broadcast));
+
+        // привязываем значения
+        $stmt->bindParam(':broadcast', $this->broadcast);
+
+        // уникальный идентификатор записи для редактирования
+        $stmt->bindParam(':id_concert', $this->id_concert);
+
+        // Если выполнение успешно, то информация о трансляции концерта будет сохранена в базе данных
+        try {
+            if ($stmt->execute()) {
+                return true;
+            }
+        } catch (Exception $e) {
+            return false;
+        }
+    }
 }
