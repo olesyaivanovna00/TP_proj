@@ -76,7 +76,7 @@ class Concert
     }
 
     // обновить концерт
-    public function update()
+    public function update_concert()
     {
 
         // Вставляем запрос
@@ -98,18 +98,53 @@ class Concert
         $this->time_end_sale = htmlspecialchars(strip_tags($this->time_end_sale));
         $this->age_restriction = htmlspecialchars(strip_tags($this->age_restriction));
         $this->id_genre = htmlspecialchars(strip_tags($this->id_genre));
-        
+
         // привязываем значения
         $stmt->bindParam(':date_concert', $this->date_concert);
         $stmt->bindParam(':time_start_sale', $this->time_start_sale);
         $stmt->bindParam(':time_end_sale', $this->time_end_sale);
         $stmt->bindParam(':age_restriction', $this->age_restriction);
         $stmt->bindParam(':id_genre', $this->id_genre);
-        
+
         // уникальный идентификатор записи для редактирования
         $stmt->bindParam(':id_concert', $this->id_concert);
 
         // Если выполнение успешно, то информация о концерте будет сохранена в базе данных
+        try {
+            if ($stmt->execute()) {
+                return true;
+            }
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    // обновить промо концерта
+    public function update_promo()
+    {
+
+        // Вставляем запрос
+        $query = "UPDATE " . $this->table_name . "
+            SET
+                img_promo = :img_promo,
+                description_promo = :description_promo
+            WHERE id_concert = :id_concert";
+
+        // подготовка запроса
+        $stmt = $this->conn->prepare($query);
+
+        // инъекция
+        $this->img_promo = htmlspecialchars(strip_tags($this->img_promo));
+        $this->description_promo = htmlspecialchars(strip_tags($this->description_promo));
+
+        // привязываем значения
+        $stmt->bindParam(':img_promo', $this->img_promo);
+        $stmt->bindParam(':description_promo', $this->description_promo);
+
+        // уникальный идентификатор записи для редактирования
+        $stmt->bindParam(':id_concert', $this->id_concert);
+
+        // Если выполнение успешно, то информация о промо концерта будет сохранена в базе данных
         try {
             if ($stmt->execute()) {
                 return true;

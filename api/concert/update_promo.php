@@ -42,7 +42,7 @@ $jwt = isset($data->jwt) ? $data->jwt : "";
 // если JWT не пуст
 if ($jwt) {
 
-    // если декодирование выполнено успешно, показать данные концерта
+    // если декодирование выполнено успешно, показать данные промо концерта
     try {
 
         // декодирование jwt
@@ -60,29 +60,46 @@ if ($jwt) {
         if ($organizer->checkIAT() && $organizer->checkSUB()) {
             // Нам нужно установить отправленные данные (через форму HTML) в свойствах объекта концерт
             $concert->id_concert = $data->id_concert;
-            $concert->date_concert = $data->date_concert;
-            $concert->time_start_sale = $data->time_start_sale;
-            $concert->time_end_sale = $data->time_end_sale;
-            $concert->age_restriction = $data->age_restriction;
-            $concert->id_genre = $data->id_genre;
+            $concert->description_promo = $data->description_promo;
 
-            // обновление концерта
-            if ($types_places->update_concert()) {
+            //если новая картинка не загружена
+            if ($_FILES['picture']['tmp_name'] == "") {
+
+                //оставляем путь к старой картинке
+                $concert->img_promo = $data->img_promo;
+            }
+
+            //если новая картинка загружена
+            else {
+
+                // Путь загрузки
+                $path = '../../image/';
+
+                //время загрузки
+                $timeImg = time();
+
+                //путь к новой картинке
+                $concert->img_promo = $path . $timeImg . '+' . $_FILES['picture']['name'];
+                @copy($_FILES['picture']['tmp_name'], $path . $timeImg . '+' . $_FILES['picture']['name']);
+            }
+
+            // обновление промо концерта
+            if ($types_places->update_promo()) {
 
                 // устанавливаем код ответа
                 http_response_code(200);
 
-                // покажем сообщение о том, что  концерт обновлен
-                echo json_encode(array("message" => "Концерт обновлен."));
+                // покажем сообщение о том, что промо концерта обновлено
+                echo json_encode(array("message" => "Промо концерта обновлено."));
             }
 
-            // сообщение, если не удается обновить концерт
+            // сообщение, если не удается обновить промо концерта
             else {
                 // код ответа
                 http_response_code(401);
 
                 // показать сообщение об ошибке
-                echo json_encode(array("message" => "Невозможно обновить концерт."));
+                echo json_encode(array("message" => "Невозможно обновить промо концерта."));
             }
         }
         // сообщение, если iat для организатора устарел
@@ -91,7 +108,7 @@ if ($jwt) {
             http_response_code(401);
 
             // показать сообщение об ошибке
-            echo json_encode(array("message" => "Токен устарел, невозможно обновить концерт."));
+            echo json_encode(array("message" => "Токен устарел, невозможно обновить промо концерта."));
         }
     }
 
