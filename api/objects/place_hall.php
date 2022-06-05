@@ -135,4 +135,53 @@ class Place_hall
         // вернём '$stmt', который содержит информацию о всех местах в зале
         return $stmt;
     }
+
+    // получение информации о месте в зале
+    function information_place_hall()
+    {
+
+        // запрос, чтобы получить данные о месте в зале
+        $query = "SELECT id_place_hall, id_area, id_types_places, row, place, status, x_map, y_map
+           FROM " . $this->table_name . "
+           WHERE id_place_hall = :id_place_hall
+           LIMIT 0,1";
+
+        // подготовка запроса
+        $stmt = $this->conn->prepare($query);
+
+        // инъекция
+        $this->id_place_hall = htmlspecialchars(strip_tags($this->id_place_hall));
+
+        // привязываем значение id_place_hall
+        $stmt->bindParam(':id_place_hall', $this->id_place_hall);
+
+        // выполняем запрос
+        $stmt->execute();
+
+        // получаем количество строк
+        $num = $stmt->rowCount();
+
+        // если место в зале есть 
+        if ($num > 0) {
+
+            // получаем значения
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // присвоим значения свойствам объекта
+            $this->id_place_hall = $row['id_place_hall'];
+            $this->id_area = $row['id_area'];
+            $this->id_types_places = $row['id_types_places'];
+            $this->row = $row['row'];
+            $this->place = $row['place'];
+            $this->status = $row['status'];
+            $this->x_map = $row['x_map'];
+            $this->y_map = $row['y_map'];
+
+            // вернём 'true', потому что информация о месте в зале есть
+            return true;
+        }
+
+        // вернём 'false', если информации о месте в зале нет
+        return false;
+    }
 }
