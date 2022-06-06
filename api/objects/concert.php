@@ -242,7 +242,7 @@ class Concert
     function information_all_concert_area()
     {
 
-        // запрос, чтобы получить данные городов
+        // запрос, чтобы получить данные концертов на площадке
         $query = "SELECT id_concert, id_organizer, date_concert, time_start_sale, time_end_sale, age_restriction, id_genre, id_area, broadcast, img_promo, description_promo
         FROM " . $this->table_name . " 
         WHERE id_area = :id_area 
@@ -252,15 +252,41 @@ class Concert
         $stmt = $this->conn->prepare($query);
 
         // инъекция
-        $this->id_concert = htmlspecialchars(strip_tags($this->id_concert));
+        $this->id_area = htmlspecialchars(strip_tags($this->id_area));
 
-        // привязываем значение id_concert
-        $stmt->bindParam(':id_area', $this->id_concert);
+        // привязываем значение id_area
+        $stmt->bindParam(':id_area', $this->id_area);
 
         // выполняем запрос
         $stmt->execute();
 
-        // вернём '$stmt', который содержит информацию о городах
+        // вернём '$stmt', который содержит информацию о концертах на площадке
+        return $stmt;
+    }
+
+    // получение информации о всех концертах определенного жанра
+    function information_all_concert_genre()
+    {
+
+        // запрос, чтобы получить данные концертов определенного жанра
+        $query = "SELECT id_concert, id_organizer, date_concert, time_start_sale, time_end_sale, age_restriction, id_genre, id_area, broadcast, img_promo, description_promo
+        FROM " . $this->table_name . " 
+        WHERE id_genre = :id_genre 
+        ORDER BY date_concert ASC";
+
+        // подготовка запроса
+        $stmt = $this->conn->prepare($query);
+
+        // инъекция
+        $this->id_genre = htmlspecialchars(strip_tags($this->id_genre));
+
+        // привязываем значение id_genre
+        $stmt->bindParam(':id_genre', $this->id_genre);
+
+        // выполняем запрос
+        $stmt->execute();
+
+        // вернём '$stmt', который содержит информацию о концертах определенного жанра
         return $stmt;
     }
 }
