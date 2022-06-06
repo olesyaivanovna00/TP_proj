@@ -237,5 +237,30 @@ class Concert
         // вернём 'false', если информации о концерте нет
         return false;
     }
-    
+
+    // получение информации о всех концертах на площадке
+    function information_all_concert_area()
+    {
+
+        // запрос, чтобы получить данные городов
+        $query = "SELECT id_concert, id_organizer, date_concert, time_start_sale, time_end_sale, age_restriction, id_genre, id_area, broadcast, img_promo, description_promo
+        FROM " . $this->table_name . " 
+        WHERE id_area = :id_area 
+        ORDER BY date_concert ASC";
+
+        // подготовка запроса
+        $stmt = $this->conn->prepare($query);
+
+        // инъекция
+        $this->id_concert = htmlspecialchars(strip_tags($this->id_concert));
+
+        // привязываем значение id_concert
+        $stmt->bindParam(':id_area', $this->id_concert);
+
+        // выполняем запрос
+        $stmt->execute();
+
+        // вернём '$stmt', который содержит информацию о городах
+        return $stmt;
+    }
 }
