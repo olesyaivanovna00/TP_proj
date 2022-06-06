@@ -54,17 +54,17 @@ if ($num > 0) {
         if ($information_data) {
 
             $concert_item = array(
-                "id_concert" => $concert->$id_concert,
-                "id_organizer" => $concert->$id_organizer,
-                "date_concert" => $concert->$date_concert,
-                "time_start_sale" => $concert->$time_start_sale,
-                "time_end_sale" => $concert->$time_end_sale,
-                "age_restriction" => $concert->$age_restriction,
-                "id_genre" => $concert->$id_genre,
-                "id_area" => $concert->$id_area,
-                "broadcast" => $concert->$broadcast,
-                "img_promo" => $concert->$img_promo,
-                "description_promo" => $concert->$description_promo
+                "id_concert" => $concert->id_concert,
+                "id_organizer" => $concert->id_organizer,
+                "date_concert" => $concert->date_concert,
+                "time_start_sale" => $concert->time_start_sale,
+                "time_end_sale" => $concert->time_end_sale,
+                "age_restriction" => $concert->age_restriction,
+                "id_genre" => $concert->id_genre,
+                "id_area" => $concert->id_area,
+                "broadcast" => $concert->broadcast,
+                "img_promo" => $concert->img_promo,
+                "description_promo" => $concert->description_promo
             );
 
             array_push($concert_arr["concert_records"], $concert_item);
