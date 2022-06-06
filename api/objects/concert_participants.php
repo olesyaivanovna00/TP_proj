@@ -48,4 +48,29 @@ class Concert_participants
             return false;
         }
     }
+
+    // получение информации о всех концертах определенного исполнителя
+    function information_all_concert_executor()
+    {
+
+        // запрос, чтобы получить данные концертов определенного жанра
+        $query = "SELECT id_concert, id_executor
+        FROM " . $this->table_name . " 
+        WHERE id_executor = :id_executor";
+
+        // подготовка запроса
+        $stmt = $this->conn->prepare($query);
+
+        // инъекция
+        $this->id_executor = htmlspecialchars(strip_tags($this->id_executor));
+
+        // привязываем значение id_executor
+        $stmt->bindParam(':id_executor', $this->id_executor);
+
+        // выполняем запрос
+        $stmt->execute();
+
+        // вернём '$stmt', который содержит информацию о концертах определенного жанра
+        return $stmt;
+    }
 }
