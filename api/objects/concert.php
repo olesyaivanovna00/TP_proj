@@ -185,4 +185,57 @@ class Concert
             return false;
         }
     }
+
+    // получение информации о концерте
+    function information_concert()
+    {
+
+        // запрос, чтобы получить данные о концерте
+        $query = "SELECT id_concert, id_organizer, date_concert, time_start_sale, time_end_sale, age_restriction, id_genre, id_area, broadcast, img_promo, description_promo
+           FROM " . $this->table_name . "
+           WHERE id_concert = :id_concert
+           LIMIT 0,1";
+
+        // подготовка запроса
+        $stmt = $this->conn->prepare($query);
+
+        // инъекция
+        $this->id_concert = htmlspecialchars(strip_tags($this->id_concert));
+
+        // привязываем значение id_concert
+        $stmt->bindParam(':id_concert', $this->id_concert);
+
+        // выполняем запрос
+        $stmt->execute();
+
+        // получаем количество строк
+        $num = $stmt->rowCount();
+
+        // если концерт есть 
+        if ($num > 0) {
+
+            // получаем значения
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // присвоим значения свойствам объекта
+            $this->id_concert = $row['id_concert'];
+            $this->id_organizer = $row['id_organizer'];
+            $this->date_concert = $row['date_concert'];
+            $this->time_start_sale = $row['time_start_sale'];
+            $this->time_end_sale = $row['time_end_sale'];
+            $this->age_restriction = $row['age_restriction'];
+            $this->id_genre = $row['id_genre'];
+            $this->id_area = $row['id_area'];
+            $this->broadcast = $row['broadcast'];
+            $this->img_promo = $row['img_promo'];
+            $this->description_promo = $row['description_promo'];
+
+            // вернём 'true', потому что информация о концерте есть
+            return true;
+        }
+
+        // вернём 'false', если информации о концерте нет
+        return false;
+    }
+    
 }
