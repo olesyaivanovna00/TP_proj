@@ -20,15 +20,15 @@ use Firebase\JWT\Key;
 // подключение к БД
 // файлы, необходимые для подключения к базе данных
 include_once '../config/database.php';
-include_once '../objects/concert.php';
+include_once '../objects/concert_participants.php';
 include_once '../objects/organizer.php';
 
 // получаем соединение с базой данных
 $database = new Database();
 $db = $database->getConnection();
 
-// создание объекта 'Concert'
-$concert = new Concert($db);
+// создание объекта 'Concert_participants'
+$concert_participants = new Concert_participants($db);
 
 // создание объекта 'Organizer'
 $organizer = new Organizer($db);
@@ -42,7 +42,7 @@ $jwt = isset($data->jwt) ? $data->jwt : "";
 // если JWT не пуст
 if ($jwt) {
 
-    // если декодирование выполнено успешно, показать данные концерта
+    // если декодирование выполнено успешно, показать данные участников концерта
     try {
 
         // декодирование jwt
@@ -59,55 +59,45 @@ if ($jwt) {
         //проверяем значения
         if ($organizer->checkIAT() && $organizer->checkSUB()) {
 
-            // Нам нужно установить отправленные данные (через форму HTML) в свойствах объекта концерт
-            $concert->id_organizer = $data->id_organizer;
-            $concert->date_concert = $data->date_concert;
-            $concert->time_start_sale = $data->time_start_sale;
-            $concert->time_end_sale = $data->time_end_sale;
-            $concert->age_restriction = $data->age_restriction;
-            $concert->id_genre = $data->id_genre;
-            $concert->id_area = $data->id_area;
+            // Нам нужно установить отправленные данные (через форму HTML) в свойствах объекта участники концерта
+            $concert_participants->id_concert = $data->id_concert;
+            $concert_participants->id_executor = $data->id_executor;
 
             // создание концерта
             if (
-                !empty($concert->id_organizer) &&
-                !empty($concert->date_concert) &&
-                !empty($concert->time_start_sale) &&
-                !empty($concert->time_end_sale) &&
-                !empty($concert->age_restriction) &&
-                !empty($concert->id_genre) &&
-                !empty($concert->id_area)
+                !empty($concert_participants->id_concert) &&
+                !empty($concert_participants->id_executor)
             ) {
 
-                // если все параметры переданы, создаем концерт
-                if ($concert->create()) {
+                // если все параметры переданы, создаем участника концерта
+                if ($concert_participants->create()) {
 
                     // устанавливаем код ответа
                     http_response_code(200);
 
-                    // покажем сообщение о том, что концерт создан
-                    echo json_encode(array("message" => "Концерт создан."));
+                    // покажем сообщение о том, что участник концерта создан
+                    echo json_encode(array("message" => "Участник концерта создан."));
                 }
 
-                // сообщение, если не удаётся создать концерт
+                // сообщение, если не удаётся создать участника концерта
                 else {
 
                     // устанавливаем код ответа
                     http_response_code(400);
 
-                    // покажем сообщение о том, что создать концерт не удалось
-                    echo json_encode(array("message" => "Невозможно создать концерт."));
+                    // покажем сообщение о том, что создать участника концерта не удалось
+                    echo json_encode(array("message" => "Невозможно создать участника концерта."));
                 }
             }
 
-            // сообщение, если не удаётся создать концерт
+            // сообщение, если не удаётся создать участника концерта
             else {
 
                 // устанавливаем код ответа
                 http_response_code(400);
 
-                // покажем сообщение о том, что создать концерт не удалось
-                echo json_encode(array("message" => "Невозможно создать концерт, не хватает параметров"));
+                // покажем сообщение о том, что создать участника концерта не удалось
+                echo json_encode(array("message" => "Невозможно создать участника концерта, не хватает параметров"));
             }
         }
 
@@ -117,7 +107,7 @@ if ($jwt) {
             http_response_code(401);
 
             // показать сообщение об ошибке
-            echo json_encode(array("message" => "Токен устарел, невозможно создать концерт."));
+            echo json_encode(array("message" => "Токен устарел, невозможно создать участника концерта."));
         }
     }
 
