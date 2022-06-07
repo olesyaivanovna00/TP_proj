@@ -60,6 +60,7 @@ if ($jwt) {
         if ($administrator_sites->checkIAT() && $administrator_sites->checkSUB()) {
 
             // Нам нужно установить отправленные данные (через форму HTML) в свойствах объекта тип мест
+            $types_places->id_types_places = $data->id_types_places;
             $types_places->title = $data->title;
             $types_places->description = $data->description;
             $types_places->units = $data->units;

@@ -20,18 +20,18 @@ use Firebase\JWT\Key;
 // подключение к БД
 // файлы, необходимые для подключения к базе данных
 include_once '../config/database.php';
-include_once '../objects/area.php';
-include_once '../objects/administrator_sites.php';
+include_once '../objects/concert.php';
+include_once '../objects/organizer.php';
 
 // получаем соединение с базой данных
 $database = new Database();
 $db = $database->getConnection();
 
-// создание объекта 'Area'
-$area = new Area($db);
+// создание объекта 'Concert'
+$concert = new Concert($db);
 
-// создание объекта 'Administrator_sites'
-$administrator_sites = new Administrator_sites($db);
+// создание объекта 'Organizer'
+$organizer = new Organizer($db);
 
 // получаем данные
 $data = json_decode(file_get_contents("php://input"));
@@ -42,56 +42,53 @@ $jwt = isset($data->jwt) ? $data->jwt : "";
 // если JWT не пуст
 if ($jwt) {
 
-    // если декодирование выполнено успешно, показать данные площадки
+    // если декодирование выполнено успешно, показать данные трансляции концерта
     try {
 
         // декодирование jwt
         $decoded = JWT::decode($jwt, new Key($key, 'HS256'));
 
-        // устанавливаем значения iat для администратора площадок
-        $administrator_sites->id_administrator_sites = $decoded->data->id_administrator_sites;
-        $administrator_sites->iat = $decoded->iat;
+        // устанавливаем значения iat для организатора
+        $organizer->id_organizer = $decoded->data->id_organizer;
+        $organizer->iat = $decoded->iat;
 
-        // устанавливаем значения sub для администратора площадок
-        $administrator_sites->sub = $decoded->sub;
-        $administrator_sites->subCheck = $subA;
+        // устанавливаем значения sub для организатора
+        $organizer->sub = $decoded->sub;
+        $organizer->subCheck = $subO;
 
         //проверяем значения
-        if ($administrator_sites->checkIAT() && $administrator_sites->checkSUB()) {
+        if ($organizer->checkIAT() && $organizer->checkSUB()) {
+            // Нам нужно установить отправленные данные (через форму HTML) в свойствах объекта концерт
+            $concert->id_concert = $data->id_concert;
+            $concert->broadcast = $data->broadcast;
 
-            // Нам нужно установить отправленные данные (через форму HTML) в свойствах объекта площадка
-            $area->id_area = $data->id_area;
-            $area->title = $data->title;
-            $area->id_city = $data->id_city;
-            $area->address = $data->address;
-            $area->status = $data->status;
-            
-            // обновление площадки
-            if ($area->update()) {
+
+            // обновление трансляции концерта
+            if ($concert->update_broadcast()) {
 
                 // устанавливаем код ответа
                 http_response_code(200);
 
-                // покажем сообщение о том, что площадка обновлена
-                echo json_encode(array("message" => "Площадка обновлена."));
+                // покажем сообщение о том, что  трансляция концерта обновлена
+                echo json_encode(array("message" => "Трансляция концерта обновленя."));
             }
 
-            // сообщение, если не удается обновить площадку
+            // сообщение, если не удается обновить трансляцию концерта
             else {
                 // код ответа
                 http_response_code(401);
 
                 // показать сообщение об ошибке
-                echo json_encode(array("message" => "Невозможно обновить площадку."));
+                echo json_encode(array("message" => "Невозможно обновить трансляцию концерта."));
             }
         }
-        // сообщение, если iat для администратора площадок устарел
+        // сообщение, если iat для организатора устарел
         else {
             // код ответа
             http_response_code(401);
 
             // показать сообщение об ошибке
-            echo json_encode(array("message" => "Токен устарел, невозможно обновить площадку."));
+            echo json_encode(array("message" => "Токен устарел, невозможно обновить трансляцию концерта."));
         }
     }
 
@@ -115,6 +112,6 @@ else {
     // код ответа
     http_response_code(401);
 
-    // сообщить администратору площадок что доступ запрещен
+    // сообщить организатору что доступ запрещен
     echo json_encode(array("message" => "Доступ закрыт."));
 }

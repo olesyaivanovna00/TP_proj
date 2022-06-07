@@ -20,15 +20,15 @@ use Firebase\JWT\Key;
 // подключение к БД
 // файлы, необходимые для подключения к базе данных
 include_once '../config/database.php';
-include_once '../objects/types_places.php';
+include_once '../objects/place_hall.php';
 include_once '../objects/administrator_sites.php';
 
 // получаем соединение с базой данных
 $database = new Database();
 $db = $database->getConnection();
 
-// создание объекта 'Types_places'
-$types_places = new Types_places($db);
+// создание объекта 'Place_hall'
+$place_hall = new Place_hall($db);
 
 // создание объекта 'Administrator_sites'
 $administrator_sites = new Administrator_sites($db);
@@ -42,7 +42,7 @@ $jwt = isset($data->jwt) ? $data->jwt : "";
 // если JWT не пуст
 if ($jwt) {
 
-    // если декодирование выполнено успешно, показать данные типа мест
+    // если декодирование выполнено успешно, показать данные места
     try {
 
         // декодирование jwt
@@ -59,61 +59,40 @@ if ($jwt) {
         //проверяем значения
         if ($administrator_sites->checkIAT() && $administrator_sites->checkSUB()) {
 
-            // Нам нужно установить отправленные данные (через форму HTML) в свойствах объекта тип мест
-            $types_places->title = $data->title;
-            $types_places->description = $data->description;
-            $types_places->units = $data->units;
-            $types_places->status = $data->status;
-            $types_places->id_area = $data->id_area;
+            // Нам нужно установить отправленные данные (через форму HTML) в свойствах объекта место в зале
+            $place_hall->id_place_hall = $data->id_place_hall;
+            $place_hall->row = $data->row;
+            $place_hall->place = $data->place;
+            $place_hall->status = $data->status;
+            $place_hall->x_map = $data->x_map;
+            $place_hall->y_map = $data->y_map;
 
-            // создание типа мест
-            if (
-                !empty($types_places->title) &&
-                (!empty($types_places->description) || $types_places->description == "") &&
-                !empty($types_places->units) &&
-                !empty($types_places->status) &&
-                !empty($types_places->id_area)
-            ) {
-
-                // если все параметры переданы, создаем тип мест
-                if ($types_places->create()) {
-
-                    // устанавливаем код ответа
-                    http_response_code(200);
-
-                    // покажем сообщение о том, что тип мест создан
-                    echo json_encode(array("message" => "Тип мест создан."));
-                }
-
-                // сообщение, если не удаётся создать тип мест
-                else {
-
-                    // устанавливаем код ответа
-                    http_response_code(400);
-
-                    // покажем сообщение о том, что создать тип мест не удалось
-                    echo json_encode(array("message" => "Невозможно создать тип мест."));
-                }
-            }
-
-            // сообщение, если не удаётся создать тип мест
-            else {
+            // обновление места
+            if ($place_hall->update()) {
 
                 // устанавливаем код ответа
-                http_response_code(400);
+                http_response_code(200);
 
-                // покажем сообщение о том, что создать тип мест не удалось
-                echo json_encode(array("message" => "Невозможно создать тип мест, не хватает параметров"));
+                // покажем сообщение о том, что место в зале обновлено
+                echo json_encode(array("message" => "Место в зале обновлено."));
+            }
+
+            // сообщение, если не удается обновить место в зале
+            else {
+                // код ответа
+                http_response_code(401);
+
+                // показать сообщение об ошибке
+                echo json_encode(array("message" => "Невозможно обновить место в зале."));
             }
         }
-
         // сообщение, если iat для администратора площадок устарел
         else {
             // код ответа
             http_response_code(401);
 
             // показать сообщение об ошибке
-            echo json_encode(array("message" => "Токен устарел, невозможно создать тип мест."));
+            echo json_encode(array("message" => "Токен устарел, невозможно обновить место в зале."));
         }
     }
 
