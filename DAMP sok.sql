@@ -8,14 +8,21 @@ CREATE TABLE `administrator_sites` (
   `iat` int DEFAULT NULL
 );
 
+INSERT INTO `administrator_sites` (`id_administrator_sites`, `login`, `password`, `mail`, `phone`, `id_city`, `iat`) VALUES
+(1, 'ОРГ', 'qwerty', 'h@k.h', '8920', 1, 1515115151);
+
 CREATE TABLE `area` (
   `id_area` int NOT NULL,
   `id_administrator_sites` int NOT NULL,
   `title` varchar(120) NOT NULL,
   `id_city` int NOT NULL,
   `address` varchar(250) NOT NULL,
+  `status` varchar(15) NOT NULL,
   `img_map` varchar(120) DEFAULT NULL
 );
+
+INSERT INTO `area` (`id_area`, `id_administrator_sites`, `title`, `id_city`, `address`, `status`, `img_map`) VALUES
+(1, 1, 'klub', 1, 'ert', 'active', 'sdf');
 
 CREATE TABLE `auction_product` (
   `id_auction_product` int NOT NULL,
@@ -53,6 +60,11 @@ CREATE TABLE `city` (
   `title` varchar(50) NOT NULL
 );
 
+INSERT INTO `city` (`id_city`, `title`) VALUES
+(1, 'VRN'),
+(2, 'MSK'),
+(3, 'SPB');
+
 CREATE TABLE `concert` (
   `id_concert` int NOT NULL,
   `id_organizer` int NOT NULL,
@@ -67,20 +79,40 @@ CREATE TABLE `concert` (
   `description_promo` varchar(1000) DEFAULT NULL
 );
 
+INSERT INTO `concert` (`id_concert`, `id_organizer`, `date_concert`, `time_start_sale`, `time_end_sale`, `age_restriction`, `id_genre`, `id_area`, `broadcast`, `img_promo`, `description_promo`) VALUES
+(8, 2, 1654553175, 1654153175, 1654553575, 16, 2, 1, 'tip', '1654533175Flire', 'Про концерт'),
+(13, 1, 1654552175, 1654152175, 1654555575, 18, 1, 1, 'tip', '1654733175Flire', 'Ура');
+
 CREATE TABLE `concert_participants` (
   `id_concert` int NOT NULL,
   `id_executor` int NOT NULL
 );
+
+INSERT INTO `concert_participants` (`id_concert`, `id_executor`) VALUES
+(8, 1),
+(8, 3),
+(13, 2),
+(13, 1);
 
 CREATE TABLE `executor` (
   `id_executor` int NOT NULL,
   `title` varchar(150) NOT NULL
 );
 
+INSERT INTO `executor` (`id_executor`, `title`) VALUES
+(1, 'Витя'),
+(2, 'Сережа'),
+(3, 'Игорь');
+
 CREATE TABLE `genre` (
   `id_genre` int NOT NULL,
   `title` varchar(150) NOT NULL
 );
+
+INSERT INTO `genre` (`id_genre`, `title`) VALUES
+(1, 'pop'),
+(2, 'rok'),
+(3, 'bluz');
 
 CREATE TABLE `organizer` (
   `id_organizer` int NOT NULL,
@@ -94,12 +126,17 @@ CREATE TABLE `organizer` (
   `iat` int DEFAULT NULL
 );
 
+INSERT INTO `organizer` (`id_organizer`, `title`, `login`, `password`, `mail`, `phone`, `payment_card`, `id_city`, `iat`) VALUES
+(1, 'dfsf', 'khh', '$2y$10$lKBvPTZSw/keDO02UWilguZMQ8y6e8Kic2UjUnMHHoQvdabCOgRsO', 'ww@F', '78', '456452', 1, 1651952673),
+(2, 'ddgfsf', 'khbgjhh', '$2y$10$eJb8S.fqlD953s205FMAAO4dgyutNr/1431RA8c3ROrhnRpycRTDi', 'wqqw@F', '787', '11452', 1, 1651952970);
+
 CREATE TABLE `place_hall` (
   `id_place_hall` int NOT NULL,
   `id_area` int NOT NULL,
   `id_types_places` int NOT NULL,
   `row` int DEFAULT NULL,
   `place` int NOT NULL,
+  `status` varchar(15) NOT NULL,
   `x_map` int DEFAULT NULL,
   `y_map` int DEFAULT NULL
 );
@@ -119,6 +156,7 @@ CREATE TABLE `types_places` (
   `title` varchar(120) NOT NULL,
   `description` varchar(1000) DEFAULT NULL,
   `units` varchar(15) NOT NULL,
+  `status` varchar(15) NOT NULL,
   `id_area` int NOT NULL
 );
 
@@ -139,10 +177,11 @@ INSERT INTO `users` (`id_users`, `name`, `mail`, `phone`, `password`, `payment_c
 (5, 'Sergey', 'uyo', '', '$2y$10$b1Fp7mihhFuRgBa0y/VuE.yLqbs4iPvPd7fDkuAwrIbnaau.HdG3G', '', 0),
 (7, 'Serdbhgey', 'lesbdsdgfs@m.ru', '', '$2y$10$mWeTFOnOwOxKuPEPs73MC.ySbaigNIhqfdXxVAjjjw8bTKHwRtrce', '', 0),
 (8, 'Serdbhgey', 'ldfgdsdgfs@m.ru', '', '$2y$10$56VKTTayooMDJRttGWrwlOzxU7HE6cfrxi3XiAKc2TnOMeumBmiWy', '', 0),
-(9, 'SerSer', 'ld@m.ru', '89', '$2y$10$OQdoAnJ4jbZgWinFoCdDKe6PXfy/76vaKz.QYncYgRJBpJNxyeHvy', '456456', 1650324577),
+(9, 'SerSer', 'ld@m.ru', '89', '$2y$10$OQdoAnJ4jbZgWinFoCdDKe6PXfy/76vaKz.QYncYgRJBpJNxyeHvy', '456456', 1651965301),
 (10, 'Влад', 'vl@g.ru', '79854654654', '$2y$10$o9YKqBe9dmkUd1AeursB1ucY87Ay7F40sj/fNVFTqKVDxy5YBKxUe', '5755454457', 1650732724),
 (11, 'ant', 'a@m.r', '', '$2y$10$ctKRcInGJwDg4T3ZJEUBKuU883X7/JH37CsoJkBZ/w6dHjA10kypa', '', 1650736094),
-(12, 'HHHH', 'H@m.u', '8767786', '$2y$10$lntZOjxmB8u6VOFeRhI1.ekeWXdmxXeVpkwNyh7EgytLdTpaO942O', '425432', NULL);
+(12, 'HHHH', 'H@m.u', '8767786', '$2y$10$lntZOjxmB8u6VOFeRhI1.ekeWXdmxXeVpkwNyh7EgytLdTpaO942O', '425432', NULL),
+(13, 'hjkh', 'ghkjg@vv', '123456', '$2y$10$QVxX7yIZuABkcImYUh5Ahu1x2VvfValXjbd63lTI404.h9ByYTZau', '555', 1652215103);
 
 
 ALTER TABLE `administrator_sites`
@@ -176,7 +215,8 @@ ALTER TABLE `city`
 ALTER TABLE `concert`
   ADD PRIMARY KEY (`id_concert`),
   ADD KEY `id_area` (`id_area`),
-  ADD KEY `id_genre` (`id_genre`);
+  ADD KEY `id_genre` (`id_genre`),
+  ADD KEY `concert_ibfk_1` (`id_organizer`);
 
 ALTER TABLE `concert_participants`
   ADD KEY `id_concert` (`id_concert`),
@@ -215,10 +255,10 @@ ALTER TABLE `users`
 
 
 ALTER TABLE `administrator_sites`
-  MODIFY `id_administrator_sites` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_administrator_sites` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 ALTER TABLE `area`
-  MODIFY `id_area` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_area` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 ALTER TABLE `auction_product`
   MODIFY `id_auction_product` int NOT NULL AUTO_INCREMENT;
@@ -230,19 +270,19 @@ ALTER TABLE `auction_ticket`
   MODIFY `id_auction_ticket` int NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `city`
-  MODIFY `id_city` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_city` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 ALTER TABLE `concert`
-  MODIFY `id_concert` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_concert` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 ALTER TABLE `executor`
-  MODIFY `id_executor` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_executor` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 ALTER TABLE `genre`
-  MODIFY `id_genre` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_genre` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 ALTER TABLE `organizer`
-  MODIFY `id_organizer` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_organizer` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 ALTER TABLE `place_hall`
   MODIFY `id_place_hall` int NOT NULL AUTO_INCREMENT;
@@ -254,7 +294,7 @@ ALTER TABLE `types_places`
   MODIFY `id_types_places` int NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `users`
-  MODIFY `id_users` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_users` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 
 ALTER TABLE `administrator_sites`
@@ -276,7 +316,7 @@ ALTER TABLE `auction_ticket`
   ADD CONSTRAINT `auction_ticket_ibfk_3` FOREIGN KEY (`id_ticket`) REFERENCES `ticket` (`id_ticket`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 ALTER TABLE `concert`
-  ADD CONSTRAINT `concert_ibfk_1` FOREIGN KEY (`id_concert`) REFERENCES `organizer` (`id_organizer`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `concert_ibfk_1` FOREIGN KEY (`id_organizer`) REFERENCES `organizer` (`id_organizer`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `concert_ibfk_2` FOREIGN KEY (`id_area`) REFERENCES `area` (`id_area`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `concert_ibfk_3` FOREIGN KEY (`id_genre`) REFERENCES `genre` (`id_genre`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
@@ -298,5 +338,3 @@ ALTER TABLE `ticket`
 
 ALTER TABLE `types_places`
   ADD CONSTRAINT `types_places_ibfk_1` FOREIGN KEY (`id_area`) REFERENCES `area` (`id_area`) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
-
