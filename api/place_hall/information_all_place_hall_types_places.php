@@ -21,12 +21,12 @@ $place_hall = new Place_hall($db);
 // получаем значение JSON
 $data = json_decode(file_get_contents("php://input"));
 
-// получаем id_area
-$id_area = isset($data->id_area) ? $data->id_area : "";
-$place_hall->id_area = $id_area;
+// получаем id_types_places
+$id_types_places = isset($data->id_types_places) ? $data->id_types_places : "";
+$place_hall->id_types_places = $id_types_places;
 
-// запрашиваем места в зале
-$stmt = $place_hall->information_all_place_hall_area();
+// запрашиваем места определенного типа мест
+$stmt = $place_hall->information_all_place_hall_types_places();
 $num = $stmt->rowCount();
 
 // проверка, найдено ли больше 0 записей
@@ -63,12 +63,12 @@ if ($num > 0) {
     echo json_encode($place_hall_arr);
 }
 
-// показать сообщение об отсутствующих местах в зале
+// показать сообщение об отсутствующих местах определенного типа мест
 else {
 
     // код ответа
     http_response_code(404);
 
-    // сообщаем, что места в зале не найдены
-    echo json_encode(array("message" => "Места в зале не найдены."), JSON_UNESCAPED_UNICODE);
+    // сообщаем, что места определенного типа мест не найдены
+    echo json_encode(array("message" => "Места определенного типа мест не найдены."), JSON_UNESCAPED_UNICODE);
 }

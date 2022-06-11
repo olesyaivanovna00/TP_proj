@@ -136,6 +136,28 @@ class Place_hall
         return $stmt;
     }
 
+    // получение информации о всех местах определенного типа мест
+    function information_all_place_hall_types_places()
+    {
+
+        // запрос, чтобы получить данные мест определенного типа мест
+        $query = "SELECT id_place_hall, id_area, id_types_places, row, place, status, x_map, y_map
+           FROM " . $this->table_name . "
+           WHERE id_types_places = :id_types_places";
+
+        // подготовка запроса
+        $stmt = $this->conn->prepare($query);
+
+        // уникальный идентификатор записи для поиска всех мест определенного типа мест
+        $stmt->bindParam(':id_types_places', $this->id_types_places);
+
+        // выполняем запрос
+        $stmt->execute();
+
+        // вернём '$stmt', который содержит информацию о всех местах определенного типа мест
+        return $stmt;
+    }
+
     // получение информации о месте в зале
     function information_place_hall()
     {
