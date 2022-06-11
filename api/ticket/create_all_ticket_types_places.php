@@ -84,13 +84,13 @@ if ($jwt) {
 
                     // Нам нужно установить отправленные данные (через форму HTML) в свойствах объекта билет
                     $ticket->id_concert = $data->$id_concert;
-                    $ticket->status = $data->status;
+                    //$ticket->status = $data->status;
                     $ticket->price = $data->$price;
 
                     // создание билета
                     if (
                         !empty($ticket->id_concert) &&
-                        !empty($ticket->status) &&
+                        //!empty($ticket->status) &&
                         !empty($ticket->price) &&
                         !empty($ticket->id_place_hall)
                     ) {
