@@ -289,4 +289,23 @@ class Concert
         // вернём '$stmt', который содержит информацию о концертах определенного жанра
         return $stmt;
     }
+
+    // получение информации о всех концертах 
+    function information_all_concert()
+    {
+
+        // запрос, чтобы получить данные концертов 
+        $query = "SELECT id_concert, id_organizer, date_concert, time_start_sale, time_end_sale, age_restriction, id_genre, id_area, broadcast, img_promo, description_promo
+        FROM " . $this->table_name . " 
+        ORDER BY date_concert ASC";
+
+        // подготовка запроса
+        $stmt = $this->conn->prepare($query);
+
+        // выполняем запрос
+        $stmt->execute();
+
+        // вернём '$stmt', который содержит информацию о всех концертах 
+        return $stmt;
+    }
 }

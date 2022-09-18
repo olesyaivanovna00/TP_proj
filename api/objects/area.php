@@ -154,4 +154,25 @@ class Area
             return false;
         }
     }
+
+    // получение информации о площадке
+    function information_all_area()
+    {
+
+        // запрос, чтобы получить данные площадки
+        $query = "SELECT id_area, id_administrator_sites, title, id_city, address, status, img_map
+           FROM " . $this->table_name . "";
+
+        // подготовка запроса
+        $stmt = $this->conn->prepare($query);
+
+        // выполняем запрос
+        $stmt->execute();
+
+        // получаем количество строк
+        $num = $stmt->rowCount();
+
+        // вернём '$stmt', который содержит информацию о всех площадках 
+        return $stmt;
+    }
 }
