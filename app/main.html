@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SOK</title>
+    <!-- <link rel="stylesheet" href="style.css" />-->
+
+    <!--
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+        crossorigin="anonymous"></script>-->
+
+
+    <link rel="stylesheet" href="lib/bootstrap.min.css">
+    <script src="lib/jquery-3.6.1.min.js"></script>
+    <script src="lib/popper.min.js"></script>
+    <script src="lib/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="lib/Lbootstrap.min.css">
+
+
+</head>
+
+<body>
+
+    <div style="text-align: center">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-bottom: 50px">
+            <a class="navbar-brand"><img src="pic/logotipNF.svg" alt="logo" height="130"> </a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mb-auto">
+                    <li class="nav-item active">
+                        <h1 align="center" class="nav-link" href="#" style="color: #FAC710;"> Сервис Организации
+                            Концертов </h1>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-warning btn-lg dropdown-toggle" href="#" id="navbarDropdown"
+                            role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Регистрация / Авторизация
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown"
+                            style="text-align: center">
+                            <p>
+                            <h6 class="dropdown-header">Организаторам</h6>
+                            </p>
+                            <a class="dropdown-item" href='registration_organizer.html'>Регистрация</a>
+                            <a class="dropdown-item" href='authorization_organizer.html'>Авторизация</a>
+
+
+                            <div class="dropdown-divider"></div>
+                            <p>
+                            <h6 class="dropdown-header">Администраторам</h6>
+                            </p>
+                            <a class="dropdown-item" href='registration_administrator_sites.html'>Регистрация</a>
+                            <a class="dropdown-item" href='authorization_administrator_sites.html'>Авторизация</a>
+
+
+                            <div class="dropdown-divider"></div>
+                            <p>
+                            <h6 class="dropdown-header">Пользователям</h6>
+                            </p>
+                            <a class="dropdown-item" href='registration_users.html'>Регистрация</a>
+                            <a class="dropdown-item" href='authorization_users.html'>Авторизация</a>
+
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <img class="img-fluid" src="pic\concert.png">
+                <div class="row align-items-center" style="margin-top: -45%">
+                    <div class="col">
+                        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                            <div id="show_img_promo" class="carousel-inner mx-auto my-auto"
+                                style="width: 60%; height: 500px">
+
+                                <!-- <div class="carousel-item active">
+                                                    <img src="pic\slider.png" class="img-fluid d-block mx-auto" alt="...">
+                                                </div>
+                                                <div class="carousel-item">
+                                                    <img src="pic\slider2.png" class="img-fluid d-block mx-auto" alt="...">
+                                                </div>
+                                                <div class="carousel-item">
+                                                    <img src="pic\slider3.png" class="img-fluid d-block mx-auto" alt="...">
+                                                </div>-->
+                            </div>
+                            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button"
+                                data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Предыдущий</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button"
+                                data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Следующий</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container" style="text-align: center; margin-top: 150px;">
+        <div>
+            <div style="display: flex; justify-content: center;">
+                <p style="font-size: 25pt;">Подобрать билет</p>
+            </div>
+
+            <form id='search_form_Genre'>
+                <div class="form-row" style="font-size: 22pt;">
+
+                    <div class="form-group col-md-4">
+                        <label for="inputGenre">Жанр</label>
+                    </div>
+                    <div class="form-group col-md-4" style="margin-top: 8px;">
+                        <select name="id_genre" id="inputGenre" class="form-control"> </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <button type='submit' class="btn btn-warning btn-lg" style="width: 70%">Найти</button>
+                    </div>
+
+                </div>
+
+            </form>
+
+            <form id='search_form_Area'>
+                <div class="form-row" style="font-size: 22pt; margin-top: 50px;">
+
+                    <div class="form-group col-md-4">
+                        <label for="inputArea">Площадка</label>
+                    </div>
+                    <div class="form-group col-md-4" style="margin-top: 8px;">
+                        <select name="id_area" id="inputArea" class="form-control"> </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <button type='submit' class="btn btn-warning btn-lg" style="width: 70%">Найти</button>
+                    </div>
+
+                </div>
+
+            </form>
+
+            <form id='search_form_Executor'>
+                <div class="form-row" style="font-size: 22pt; margin-top: 50px;">
+
+                    <div class="form-group col-md-4">
+                        <label for="inputExecutor">Исполнитель</label>
+                    </div>
+                    <div class="form-group col-md-4" style="margin-top: 8px;">
+                        <select name="id_executor" id="inputExecutor" class="form-control"> </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <button type='submit' class="btn btn-warning btn-lg" style="width: 70%">Найти</button>
+                    </div>
+
+                </div>
+
+            </form>
+
+            <div class="row" style="margin-top: 50px; margin-bottom: 50px;">
+                <div class="col-1 col-md-3"></div>
+                <div class="col-10 col-md-6">
+                    <a href="page-conserts.html" class="btn btn-warning btn-lg" style="width: 70%">Другие концерты</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container" id="show_concert_html"></div>
+
+
+    <!--Модальное окно-->
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class='alert alert-danger' style='margin-bottom: 0rem'>Концерты не найдены.</div>
+            </div>
+        </div>
+    </div>
+
+    <!--Модальное окно-->
+    <div class="modal fade" id="okModal" tabindex="-1" aria-labelledby="okModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class='alert alert-primary' style='margin-bottom: 0rem'>Концерты найдены.</div>
+            </div>
+        </div>
+    </div>
+
+
+    <footer style="height: 50px;"></footer>
+</body>
+<script>
+    jQuery(function ($) {
+        let addressSOK = 'sok';
+        let addressIMG = 'http://' + addressSOK + '/image/';
+
+        var errorModal = new bootstrap.Modal(document.getElementById('errorModal'), {
+            keyboard: false
+        });
+        var okModal = new bootstrap.Modal(document.getElementById('okModal'), {
+            keyboard: false
+        });
+
+        // функция для преобразования значений формы в формат JSON
+        $.fn.serializeObject = function () {
+
+            var o = {};
+            var a = this.serializeArray();
+            $.each(a, function () {
+                if (o[this.name] !== undefined) {
+                    if (!o[this.name].push) {
+                        o[this.name] = [o[this.name]];
+                    }
+                    o[this.name].push(this.value || '');
+                } else {
+                    o[this.name] = this.value || '';
+                }
+            });
+            return o;
+        };
+
+        $(document).ready(function () {
+            show_img_promo();
+            show_genre();
+            show_area();
+            show_executor();
+        });
+
+        //$.post("http://" + addressSOK + "/api/concert/information_concert_executor.php", JSON.stringify({"id_executor": "1" }), function (data)
+        function show_img_promo() {
+            $.post("http://" + addressSOK + "/api/concert/information_concert_all.php", function (data) {
+                var show_img_promo_html = ``;
+                var show_img_promo_html_control = 1;
+                $.each(data.concert_records, function (key, val) {
+                    if (show_img_promo_html_control == 1) {
+                        show_img_promo_html += `<div class="carousel-item active"><img src="` + addressIMG +
+                            val.img_promo + `.png" class="img-fluid d-block mx-auto my-auto" alt="..."></div >`;
+                        show_img_promo_html_control = 0;
+                    } else {
+                        show_img_promo_html += `<div class="carousel-item"><img src="` + addressIMG +
+                            val.img_promo + `.png" class="img-fluid d-block mx-auto" alt="..."></div >`;
+                    }
+                });
+                $("#show_img_promo").html(show_img_promo_html);
+            });
+        }
+
+        function show_genre() {
+            $.post("http://" + addressSOK + "/api/genre/information_all_genre.php", function (data) {
+                var show_genre_html = `<option disabled selected>Выберите...</option>`;
+                $.each(data.genre_records, function (key, val) {
+                    show_genre_html += `<option value=\"` + val.id_genre + `\">` + val.title + `</option><br>`;
+                });
+                $("#inputGenre").html(show_genre_html);
+            });
+        }
+
+        function show_area() {
+            $.post("http://" + addressSOK + "/api/area/information_all_area.php", function (data) {
+                var show_area_html = `<option disabled selected>Выберите...</option>`;
+                $.each(data.area_records, function (key, val) {
+                    show_area_html += `<option value=\"` + val.id_area + `\">` + val.title + `</option><br>`;
+                });
+                $("#inputArea").html(show_area_html);
+            });
+        }
+
+        function show_executor() {
+            $.post("http://" + addressSOK + "/api/executor/information_all_executor.php", function (data) {
+                var show_executor_html = `<option disabled selected>Выберите...</option>`;
+                $.each(data.executor_records, function (key, val) {
+                    show_executor_html += `<option value=\"` + val.id_executor + `\">` + val.title + `</option><br>`;
+                });
+                $("#inputExecutor").html(show_executor_html);
+            });
+        }
+
+        // при отправке формы поиска билетов по жанру
+        $(document).on('submit', '#search_form_Genre', function () {
+
+            // получаем данные формы
+            var search_form_Genre = $(this);
+            var form_data = JSON.stringify(search_form_Genre.serializeObject());
+
+            // отправить данные формы в API
+            $.ajax({
+                url: "http://" + addressSOK + "/api/concert/information_concert_genre.php",
+                type: "POST",
+                contentType: 'application/json',
+                data: form_data,
+                success: function (result) {
+                    //okModal.show();
+                    var show_concert_genre = `<div class="row row-cols-1 row-cols-md-2">`;
+                    $.each(result.concert_records, function (key, val) {
+                        show_concert_genre += `
+                        <div class="col mb-4" style="margin-top: 30px; max-width:50%">
+                            <div class="card h-100">`;
+                        show_concert_genre += `<img src="` + addressIMG + val.img_promo +
+                            `.png" class="card-img-top" alt="image" style="max-height: 400px; width: 100%">`;
+                        show_concert_genre += `<div class="card-body">`;
+                        show_concert_genre += `<h4 class="card-title">` + val.description_promo + `</h4>`;
+                        var date_concert = new Date(val.date_concert * 1000);
+                        var dd = date_concert.getDate();
+                        if (dd < 10) dd = '0' + dd;
+                        var mm = date_concert.getMonth() + 1;
+                        if (mm < 10) mm = '0' + mm;
+                        var hh = date_concert.getHours();
+                        if (hh < 10) hh = '0' + hh;
+                        var mn = date_concert.getMinutes();
+                        if (mn < 10) mn = '0' + mn;
+
+                        show_concert_genre += `<p class="card-text">Дата проведения   ` + dd + `.` + mm + `.` + date_concert.getFullYear() + `</p>`;
+                        show_concert_genre += `<p class="card-text">Время проведения   ` + hh + `:` + mn + `</p>`;
+                        show_concert_genre += `<p class="card-text">Возростное ограничение   ` + val.age_restriction + `+</p>`;
+                        show_concert_genre += `</div><div class="card-footer">
+                            <div class="row">
+                                <div class="col"><form method="POST" id='buy_ticket' action="concert-info.html">
+                                    <button type="submit" class="btn btn-success" style="width: 100%" name="id_concert" value="`
+                            + val.id_concert + `">Купить билет</button></form>
+                                </div></div></div>
+                </div></div>`
+                    });
+                    $("#show_concert_html").html(show_concert_genre);
+                },
+                error: function (xhr, resp, text) {
+                    errorModal.show();
+                }
+            });
+
+            return false;
+        });
+
+        // при отправке формы поиска билетов по площадке
+        $(document).on('submit', '#search_form_Area', function () {
+
+            // получаем данные формы
+            var search_form_Area = $(this);
+            var form_data = JSON.stringify(search_form_Area.serializeObject());
+
+            // отправить данные формы в API
+            $.ajax({
+                url: "http://" + addressSOK + "/api/concert/information_concert_area.php",
+                type: "POST",
+                contentType: 'application/json',
+                data: form_data,
+                success: function (result) {
+                    //okModal.show();
+                    var show_concert_area = `<div class="row row-cols-1 row-cols-md-2" > `;
+                    $.each(result.concert_records, function (key, val) {
+                        show_concert_area += `
+            <div class="col" style = "margin-top: 30px; max-width:50%" >
+                <div class="card h-100">`;
+                        show_concert_area += `<img src="` + addressIMG + val.img_promo +
+                            `.png" class="card-img-top" alt="image" style="max-height: 400px; width: 100%">`;
+                        show_concert_area += `<div class="card-body">`;
+                        show_concert_area += `<h4 class="card-title">` + val.description_promo + `</h4>`;
+                        var date_concert = new Date(val.date_concert * 1000);
+                        var dd = date_concert.getDate();
+                        if (dd < 10) dd = '0' + dd;
+                        var mm = date_concert.getMonth() + 1;
+                        if (mm < 10) mm = '0' + mm;
+                        var hh = date_concert.getHours();
+                        if (hh < 10) hh = '0' + hh;
+                        var mn = date_concert.getMinutes();
+                        if (mn < 10) mn = '0' + mn;
+
+                        show_concert_area += `<p class="card-text">Дата проведения   ` + dd + `.` + mm + `.` + date_concert.getFullYear() + `</p>`;
+                        show_concert_area += `<p class="card-text">Время проведения   ` + hh + `:` + mn + `</p>`;
+                        show_concert_area += `<p class="card-text">Возростное ограничение   ` + val.age_restriction + `+</p>`;
+                        show_concert_area += `</div><div class="card-footer">
+                            <div class="row">
+                                <div class="col"><form method="POST" id='buy_ticket' action="concert-info.html">
+                                    <button type="submit" class="btn btn-success" style="width: 100%" name="id_concert" value="`
+                            + val.id_concert + `">Купить билет</button></form>
+                                </div></div></div>
+                </div></div > `
+                    });
+                    $("#show_concert_html").html(show_concert_area);
+                },
+                error: function (xhr, resp, text) {
+                    errorModal.show();
+                }
+            });
+
+            return false;
+        });
+
+
+        // при отправке формы поиска билетов по площадке
+        $(document).on('submit', '#search_form_Executor', function () {
+
+            // получаем данные формы
+            var search_form_Executor = $(this);
+            var form_data = JSON.stringify(search_form_Executor.serializeObject());
+
+            // отправить данные формы в API
+            $.ajax({
+                url: "http://" + addressSOK + "/api/concert/information_concert_executor.php",
+                type: "POST",
+                contentType: 'application/json',
+                data: form_data,
+                success: function (result) {
+                    //okModal.show();
+                    var show_concert_executor = `<div class="row row-cols-1 row-cols-md-2" > `;
+                    $.each(result.concert_records, function (key, val) {
+                        show_concert_executor += `
+            <div class="col" style = "margin-top: 30px; max-width:50%" >
+                <div class="card h-100">`;
+                        show_concert_executor += `<img src="` + addressIMG + val.img_promo +
+                            `.png" class="card-img-top" alt="image" style="max-height: 400px; width: 100%">`;
+                        show_concert_executor += `<div class="card-body">`;
+                        show_concert_executor += `<h4 class="card-title">` + val.description_promo + `</h4>`;
+                        var date_concert = new Date(val.date_concert * 1000);
+                        var dd = date_concert.getDate();
+                        if (dd < 10) dd = '0' + dd;
+                        var mm = date_concert.getMonth() + 1;
+                        if (mm < 10) mm = '0' + mm;
+                        var hh = date_concert.getHours();
+                        if (hh < 10) hh = '0' + hh;
+                        var mn = date_concert.getMinutes();
+                        if (mn < 10) mn = '0' + mn;
+
+                        show_concert_executor += `<p class="card-text">Дата проведения   ` + dd + `.` + mm + `.` + date_concert.getFullYear() + `</p>`;
+                        show_concert_executor += `<p class="card-text">Время проведения   ` + hh + `:` + mn + `</p>`;
+                        show_concert_executor += `<p class="card-text">Возростное ограничение   ` + val.age_restriction + `+</p>`;
+                        show_concert_executor += `</div><div class="card-footer">
+                            <div class="row">
+                                <div class="col"><form method="POST" id='buy_ticket' action="concert-info.html">
+                                    <button type="submit" class="btn btn-success" style="width: 100%" name="id_concert" value="`
+                            + val.id_concert + `">Купить билет</button></form>
+                                </div></div></div>
+                </div></div >`
+                    });
+                    $("#show_concert_html").html(show_concert_executor);
+                },
+                error: function (xhr, resp, text) {
+                    errorModal.show();
+                }
+            });
+
+            return false;
+        });
+
+
+    });
+</script>
+
+</html>

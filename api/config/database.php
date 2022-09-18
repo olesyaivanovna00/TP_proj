@@ -3,7 +3,7 @@ class Database {
 
     // укажите свои учетные данные базы данных
     private $host = "localhost";
-    private $db_name = "api_db";
+    private $db_name = "sok";
     private $username = "root";
     private $password = "";
     public $conn;

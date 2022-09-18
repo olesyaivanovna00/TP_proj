@@ -1,0 +1,628 @@
+openapi: "3.0.2"
+info:
+  title: API SOK
+  version: "1.0"
+servers:
+  - url: http://SOK/api/
+paths:
+  /users/create_users.php:
+    post:
+      tags:
+        - users
+      summary: Создание пользователя
+      description: Создание пользователя
+      operationId: create_users
+      requestBody:
+        description: Необходимо передать верный name mail phone password payment_card
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/users-create_users"
+        required: true
+      responses:
+        200:
+          description: Пользователь был создан.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-create_users-200"
+        401:
+          description: Невозможно создать пользователя, не хватает параметров.
+            <br>
+            Невозможно создать пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-create_users-400"
+
+  /users/information_update_users.php:
+    post:
+      tags:
+        - users
+      summary: Получение информации о пользователе
+      description: Проверка токена пользователя и получение информации о нем
+      operationId: information_update_users
+      requestBody:
+        description: Необходимо передать jwt для проверки и получения информации о пользователе
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/users-information_update_users"
+        required: true
+      responses:
+        200:
+          description: Доступ разрешен.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-information_update_users-200"
+        401:
+          description: Доступ запрещён.
+            <br>
+            Доступ закрыт.
+            <br>
+            Токен устарел, доступ запрещён.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-information_update_users-401"
+
+  /users/login.php:
+    post:
+      tags:
+        - users
+      summary: Вход в систему
+      description: Вход в систему по mail и password
+      operationId: login
+      requestBody:
+        description: Необходимо передать верный mail и password
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/users-login"
+        required: true
+      responses:
+        200:
+          description: Успешный вход в систему.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-login-200"
+        401:
+          description: Ошибка входа.
+            <br>
+            Невозможно обновить вход пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-login-401"
+
+  /users/update_users.php:
+    post:
+      tags:
+        - users
+      summary: Обновление данных пользователя
+      description: Обновление name mail phone password payment_card пользователя
+      operationId: update_users
+      requestBody:
+        description: Необходимо передать jwt и новые параметры для name mail phone password payment_card если их необходимо изменить
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/users-update_users"
+        required: true
+      responses:
+        200:
+          description: Пользователь был обновлён.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-update_users-200"
+        401:
+          description: Доступ закрыт.
+            <br>
+            Токен устарел, невозможно обновить пользователя.
+            <br>
+            Невозможно обновить пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-update_users-401"
+
+  /users/validate_token.php:
+    post:
+      tags:
+        - users
+      summary: Проверка токена
+      description: Проверка токена пользователя
+      operationId: validate_token
+      requestBody:
+        description: Необходимо передать jwt для проверки
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/users-validate_token"
+        required: true
+      responses:
+        200:
+          description: Доступ разрешен.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-validate_token-200"
+        401:
+          description: Доступ запрещён.
+            <br>
+            Доступ закрыт.
+            <br>
+            Токен устарел, доступ запрещён.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-validate_token-401"
+
+
+  /organizer/users/create_organizer.php:
+    post:
+      tags:
+        - organizer
+      summary: Создание организатора
+      description: Создание пользователя
+      operationId: create_organizer
+      requestBody:
+        description: Необходимо передать верный name mail phone password payment_card
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/users-create_users"
+        required: true
+      responses:
+        200:
+          description: Пользователь был создан.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-create_users-200"
+        401:
+          description: Невозможно создать пользователя, не хватает параметров.
+            <br>
+            Невозможно создать пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-create_users-400"
+
+  /organizer/users/information_update_organizer.php:
+    post:
+      tags:
+        - organizer
+      summary: Получение информации об организаторе
+      description: Проверка токена пользователя и получение информации о нем
+      operationId: information_update_users
+      requestBody:
+        description: Необходимо передать jwt для проверки и получения информации о пользователе
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/users-information_update_users"
+        required: true
+      responses:
+        200:
+          description: Доступ разрешен.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-information_update_users-200"
+        401:
+          description: Доступ запрещён.
+            <br>
+            Доступ закрыт.
+            <br>
+            Токен устарел, доступ запрещён.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-information_update_users-401"
+
+  /organizer/users/login.php:
+    post:
+      tags:
+        - organizer
+      summary: Вход в систему
+      description: Вход в систему по mail и password
+      operationId: login
+      requestBody:
+        description: Необходимо передать верный mail и password
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/users-login"
+        required: true
+      responses:
+        200:
+          description: Успешный вход в систему.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-login-200"
+        401:
+          description: Ошибка входа.
+            <br>
+            Невозможно обновить вход пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-login-401"
+
+  /organizer/update_organizer.php:
+    post:
+      tags:
+        - organizer
+      summary: Обновление данных организатора
+      description: Обновление name mail phone password payment_card пользователя
+      operationId: update_users
+      requestBody:
+        description: Необходимо передать jwt и новые параметры для name mail phone password payment_card если их необходимо изменить
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/users-update_users"
+        required: true
+      responses:
+        200:
+          description: Пользователь был обновлён.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-update_users-200"
+        401:
+          description: Доступ закрыт.
+            <br>
+            Токен устарел, невозможно обновить пользователя.
+            <br>
+            Невозможно обновить пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-update_users-401"
+  /organizer/validate_token.php:
+    post:
+      tags:
+        - organizer
+      summary: Проверка токена
+      description: Проверка токена пользователя
+      operationId: validate_token
+      requestBody:
+        description: Необходимо передать jwt для проверки
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/users-validate_token"
+        required: true
+      responses:
+        200:
+          description: Доступ разрешен.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-validate_token-200"
+        401:
+          description: Доступ запрещён.
+            <br>
+            Доступ закрыт.
+            <br>
+            Токен устарел, доступ запрещён.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-validate_token-401"
+
+  /administrator_sites/users/create_administrator_sites.php:
+    post:
+      tags:
+        - administrator_sites
+      summary: Создание администратора площадок
+      description: Создание пользователя
+      operationId: create_users
+      requestBody:
+        description: Необходимо передать верный name mail phone password payment_card
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/users-create_users"
+        required: true
+      responses:
+        200:
+          description: Пользователь был создан.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-create_users-200"
+        401:
+          description: Невозможно создать пользователя, не хватает параметров.
+            <br>
+            Невозможно создать пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-create_users-400"
+
+  /administrator_sites/users/information_update_administrator_sites.php:
+    post:
+      tags:
+        - administrator_sites
+      summary: Получение информации об администраторе площадок
+      description: Проверка токена пользователя и получение информации о нем
+      operationId: information_update_users
+      requestBody:
+        description: Необходимо передать jwt для проверки и получения информации о пользователе
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/users-information_update_users"
+        required: true
+      responses:
+        200:
+          description: Доступ разрешен.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-information_update_users-200"
+        401:
+          description: Доступ запрещён.
+            <br>
+            Доступ закрыт.
+            <br>
+            Токен устарел, доступ запрещён.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-information_update_users-401"
+
+  /administrator_sites/users/login.php:
+    post:
+      tags:
+        - administrator_sites
+      summary: Вход в систему
+      description: Вход в систему по mail и password
+      operationId: login
+      requestBody:
+        description: Необходимо передать верный mail и password
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/users-login"
+        required: true
+      responses:
+        200:
+          description: Успешный вход в систему.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-login-200"
+        401:
+          description: Ошибка входа.
+            <br>
+            Невозможно обновить вход пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-login-401"
+
+  /administrator_sites/update_administrator_sites.php:
+    post:
+      tags:
+        - administrator_sites
+      summary: Обновление данных администратора площадок
+      description: Обновление name mail phone password payment_card пользователя
+      operationId: update_users
+      requestBody:
+        description: Необходимо передать jwt и новые параметры для name mail phone password payment_card если их необходимо изменить
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/users-update_users"
+        required: true
+      responses:
+        200:
+          description: Пользователь был обновлён.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-update_users-200"
+        401:
+          description: Доступ закрыт.
+            <br>
+            Токен устарел, невозможно обновить пользователя.
+            <br>
+            Невозможно обновить пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-update_users-401"
+  /administrator_sites/validate_token.php:
+    post:
+      tags:
+        - administrator_sites
+      summary: Проверка токена
+      description: Проверка токена пользователя
+      operationId: validate_token
+      requestBody:
+        description: Необходимо передать jwt для проверки
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/users-validate_token"
+        required: true
+      responses:
+        200:
+          description: Доступ разрешен.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-validate_token-200"
+        401:
+          description: Доступ запрещён.
+            <br>
+            Доступ закрыт.
+            <br>
+            Токен устарел, доступ запрещён.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/users-validate_token-401"
+components:
+  schemas:
+    users:
+      type: object
+      properties:
+        id_users:
+          type: integer
+          format: int64
+        name:
+          type: string
+        mail:
+          type: string
+        phone:
+          type: string
+        password:
+          type: string
+        payment_card:
+          type: string
+        iat:
+          type: integer
+          format: int64
+
+    users-information:
+      type: object
+      properties:
+        id_users:
+          type: integer
+          format: int64
+        name:
+          type: string
+        mail:
+          type: string
+        phone:
+          type: string
+        payment_card:
+          type: string      
+
+    users-jwt:
+      type: object
+      properties:
+        id_users:
+          type: integer
+          format: int64
+        name:
+          type: string
+        mail:
+          type: string
+
+    users-create_users:
+      type: object
+      properties:
+        name:
+          type: string
+        mail:
+          type: string
+        phone:
+          type: string
+        password:
+          type: string
+        payment_card:
+          type: string
+    users-create_users-200:
+      type: object
+      properties:
+        message:
+          type: string
+    users-create_users-400:
+      type: object
+      properties:
+        message:
+          type: string
+
+    users-information_update_users:
+      type: object
+      properties:
+        jwt:
+          type: string
+    users-information_update_users-200:
+      type: object
+      properties:
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/users-information"
+    users-information_update_users-401:
+      type: object
+      properties:
+        message:
+          type: string
+
+    users-update_users:
+      type: object
+      properties:
+        jwt:
+          type: string
+        name:
+          type: string
+        mail:
+          type: string
+        phone:
+          type: string
+        password:
+          type: string
+        payment_card:
+          type: string
+    users-update_users-200:
+      type: object
+      properties:
+        message:
+          type: string
+        jwt:
+          type: string
+    users-update_users-401:
+      type: object
+      properties:
+        message:
+          type: string
+
+    users-login:
+      type: object
+      properties:
+        mail:
+          type: string
+        password:
+          type: string
+    users-login-200:
+      type: object
+      properties:
+        message:
+          type: string
+        jwt:
+          type: string
+    users-login-401:
+      type: object
+      properties:
+        message:
+          type: string
+
+    users-validate_token:
+      type: object
+      properties:
+        jwt:
+          type: string
+    users-validate_token-200:
+      type: object
+      properties:
+        message:
+          type: string
+        data:
+          $ref: "#/components/schemas/users-jwt"
+    users-validate_token-401:
+      type: object
+      properties:
+        message:
+          type: string
